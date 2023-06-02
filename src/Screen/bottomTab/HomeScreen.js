@@ -16,6 +16,7 @@ import Shoes from '../clothes/Shoes';
 import Underwear from '../clothes/Underwear';
 import Animated from 'react-native-reanimated';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Tops from '../clothes/Tops';
 
 const BottomStack = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -61,6 +62,7 @@ function HomeScreen() {
       useLegacyImplementation
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={ScreenOption}>
+      <Drawer.Screen name="Tops" component={Tops} />
       <Drawer.Screen name="Pants" component={Pants} />
       <Drawer.Screen name="Sweaters" component={Sweaters} />
       <Drawer.Screen name="Accesories" component={Accesories} />
