@@ -16,7 +16,10 @@ const Register = ({navigation}) => {
   return (
     <View style={Style.container}>
       <StatusBar hidden={true} />
-      <Image source={require('../../public/image/avata.png')} style={Style.image} />
+      <Image
+        source={require('../../public/image/avata.png')}
+        style={Style.image}
+      />
       <TextInput style={Style.textInput} placeholder="Email" />
       <TextInput style={Style.textInput} placeholder="Name" />
       <TextInput style={Style.textInput} placeholder="Password" />
@@ -72,7 +75,7 @@ const Style = StyleSheet.create({
   },
   image: {
     marginBottom: 10,
-  }
+  },
 });
 
 export default Register;
