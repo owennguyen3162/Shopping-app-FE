@@ -38,7 +38,17 @@ const CustomDrawerContent = props => {
         </View>
         <DrawerItemList {...props} />
         <DrawerItem
-          label="Close"
+          labelStyle={{color: 'red'}}
+          icon={() => (
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/6276/6276642.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
+          )}
+          label="CLOSE"
           onPress={() => props.navigation.toggleDrawer()}
         />
         <View style={{width: '100%', paddingHorizontal: 10}}>
@@ -74,7 +84,13 @@ function HomeScreen() {
         component={Tops}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/2282/2282603.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -83,7 +99,13 @@ function HomeScreen() {
         component={Pants}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/3126/3126113.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -92,7 +114,13 @@ function HomeScreen() {
         component={Sweaters}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/88/88802.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -101,7 +129,13 @@ function HomeScreen() {
         component={Accesories}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/936/936628.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -110,7 +144,13 @@ function HomeScreen() {
         component={Shoes}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/500/500225.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -119,7 +159,13 @@ function HomeScreen() {
         component={Underwear}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/3050/3050140.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
@@ -128,7 +174,13 @@ function HomeScreen() {
         component={Account}
         options={{
           drawerIcon: () => (
-            <IconAccount name="account-circle" size={30} color="#333333" />
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/1144/1144760.png',
+              }}
+              style={{width: 30, height: 30}}
+              resizeMode="contain"
+            />
           ),
         }}
       />
