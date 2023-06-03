@@ -42,13 +42,13 @@ const CustomDrawerContent = props => {
           icon={() => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/6276/6276642.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/4400/4400828.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
             />
           )}
-          label="CLOSE"
+          label="Logout"
           onPress={() => props.navigation.toggleDrawer()}
         />
         <View style={{width: '100%', paddingHorizontal: 10}}>
@@ -86,7 +86,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/2282/2282603.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/5632/5632749.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -101,7 +101,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/3126/3126113.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/2774/2774378.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -116,7 +116,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/88/88802.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/6012/6012257.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -131,7 +131,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/936/936628.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/9322/9322704.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -146,7 +146,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/500/500225.png',
+                uri: 'https://cdn-icons-png.flaticon.com/512/80/80807.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -161,7 +161,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/3050/3050140.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/2093/2093938.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
@@ -176,7 +176,7 @@ function HomeScreen() {
           drawerIcon: () => (
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/1144/1144760.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/64/64572.png',
               }}
               style={{width: 30, height: 30}}
               resizeMode="contain"
