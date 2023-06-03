@@ -8,18 +8,33 @@ import CartIcon from 'react-native-vector-icons/Feather';
 import ChatIcon from 'react-native-vector-icons/Feather';
 
 const BottomStack = createBottomTabNavigator();
-
+import {useSelector} from 'react-redux';
 function Home() {
+  const theme = useSelector(state => state.SwitchColor);
   return (
     <BottomStack.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: 'darkorchid',
-        tabBarInactiveTintColor: 'silver',
-        tabBarLabelStyle: {
-          fontSize: 11,
-        },
-      }}>
+      screenOptions={
+        theme.color === 'white'
+          ? {
+              headerShown: false,
+              tabBarActiveTintColor: 'darkorchid',
+              tabBarInactiveTintColor: 'silver',
+              tabBarLabelStyle: {
+                fontSize: 11,
+              },
+            }
+          : {
+              headerShown: false,
+              tabBarActiveTintColor: 'darkorchid',
+              tabBarInactiveTintColor: 'white',
+              tabBarLabelStyle: {
+                fontSize: 11,
+              },
+              tabBarStyle: {
+                backgroundColor: '#111111',
+              },
+            }
+      }>
       <BottomStack.Screen
         name="Main"
         component={HomeScreen}
