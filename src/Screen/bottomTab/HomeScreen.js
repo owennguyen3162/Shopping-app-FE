@@ -8,7 +8,6 @@ import {
   useDrawerProgress,
 } from '@react-navigation/drawer';
 import Pants from '../clothes/Pants';
-import {ScreenOption} from '../../utils/ScreenOptions';
 import Account from '../Account';
 import Sweaters from '../clothes/Sweaters';
 import Accesories from '../clothes/Accesories';
@@ -16,7 +15,6 @@ import Shoes from '../clothes/Shoes';
 import Underwear from '../clothes/Underwear';
 import Animated from 'react-native-reanimated';
 import Tops from '../clothes/Tops';
-import IconAccount from 'react-native-vector-icons/MaterialCommunityIcons';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = props => {
