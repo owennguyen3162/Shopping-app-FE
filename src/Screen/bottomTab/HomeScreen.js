@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, Button, Image, StyleSheet, StatusBar} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -15,9 +15,8 @@ import Accesories from '../clothes/Accesories';
 import Shoes from '../clothes/Shoes';
 import Underwear from '../clothes/Underwear';
 import Animated from 'react-native-reanimated';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-const BottomStack = createBottomTabNavigator();
+import Tops from '../clothes/Tops';
+import IconAccount from 'react-native-vector-icons/MaterialCommunityIcons';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = props => {
@@ -42,13 +41,15 @@ const CustomDrawerContent = props => {
           label="Close"
           onPress={() => props.navigation.toggleDrawer()}
         />
-        <View style={Style.bottomDrawer}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/512/1687/1687788.png',
-            }}
-            style={Style.light_bulb}
-          />
+        <View style={{width: '100%', paddingHorizontal: 10}}>
+          <View style={Style.bottomDrawer}>
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/1687/1687788.png',
+              }}
+              style={Style.light_bulb}
+            />
+          </View>
         </View>
       </Animated.View>
     </DrawerContentScrollView>
@@ -60,13 +61,77 @@ function HomeScreen() {
     <Drawer.Navigator
       useLegacyImplementation
       drawerContent={props => <CustomDrawerContent {...props} />}
-      screenOptions={ScreenOption}>
-      <Drawer.Screen name="Pants" component={Pants} />
-      <Drawer.Screen name="Sweaters" component={Sweaters} />
-      <Drawer.Screen name="Accesories" component={Accesories} />
-      <Drawer.Screen name="Shoes" component={Shoes} />
-      <Drawer.Screen name="Underwear" component={Underwear} />
-      <Drawer.Screen name="Account" component={Account} />
+      screenOptions={{
+        headerShown: false,
+        drawerLabelStyle: {
+          fontWeight: 'bold',
+          color: '#333333',
+        },
+        drawerActiveBackgroundColor: 'darkviolet',
+      }}>
+      <Drawer.Screen
+        name="Tops"
+        component={Tops}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Pants"
+        component={Pants}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Sweaters"
+        component={Sweaters}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Accesories"
+        component={Accesories}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Shoes"
+        component={Shoes}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Underwear"
+        component={Underwear}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Account"
+        component={Account}
+        options={{
+          drawerIcon: () => (
+            <IconAccount name="account-circle" size={30} color="#333333" />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -75,7 +140,6 @@ const Style = StyleSheet.create({
     marginVertical: 30,
   },
   drawContainer: {
-    paddingHorizontal: 10,
     flex: 1,
   },
   childDrawer: {
