@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import ItemHorizontal from '../../components/ItemHorizontal';
-
+import {useSelector} from 'react-redux';
 const Tops = ({navigation}) => {
   const FakeData = [
     {
@@ -50,8 +50,10 @@ const Tops = ({navigation}) => {
         'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
     },
   ];
+  const theme = useSelector(state => state.SwitchColor);
   return (
-    <View style={Style.container}>
+    <View
+      style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
       <View style={Style.header}>
         <Text style={Style.text}></Text>
@@ -60,13 +62,15 @@ const Tops = ({navigation}) => {
             source={{
               uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
             }}
-            style={Style.image}
+            style={theme.color === 'white' ? Style.image : Style.imageDark}
           />
         </TouchableWithoutFeedback>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={Style.header}>
-          <Text style={Style.text}>New arrivals</Text>
+          <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+            New arrivals
+          </Text>
         </View>
         <View style={{width: '100%'}}>
           <FlatList
@@ -80,7 +84,9 @@ const Tops = ({navigation}) => {
         </View>
         <View style={Style.view}>
           <View style={{width: '100%'}}>
-            <Text style={Style.text}>Vans Venice collection</Text>
+            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+              Vans Venice collection
+            </Text>
           </View>
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('VansVeniceDetail')}>
@@ -93,7 +99,9 @@ const Tops = ({navigation}) => {
           </TouchableWithoutFeedback>
         </View>
         <View style={Style.header}>
-          <Text style={Style.text}>Best sellers</Text>
+          <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+            Best sellers
+          </Text>
         </View>
         <View style={{width: '100%'}}>
           <FlatList
@@ -108,7 +116,9 @@ const Tops = ({navigation}) => {
 
         <View style={Style.view}>
           <View style={{width: '100%'}}>
-            <Text style={Style.text}>Vans Wayvee drop</Text>
+            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+              Vans Wayvee drop
+            </Text>
           </View>
           <Image
             source={{
@@ -128,6 +138,11 @@ const Style = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: 'white',
   },
+  containerDark: {
+    flex: 1,
+    paddingHorizontal: 15,
+    backgroundColor: '#111111',
+  },
 
   header: {
     width: '100%',
@@ -142,10 +157,21 @@ const Style = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  textDark: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   image: {
     width: 25,
     height: 25,
     resizeMode: 'center',
+  },
+  imageDark: {
+    width: 25,
+    height: 25,
+    resizeMode: 'center',
+    tintColor: 'white',
   },
   imageLarge: {
     width: 380,

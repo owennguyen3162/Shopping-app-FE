@@ -7,11 +7,13 @@ import {
   Pressable,
 } from 'react-native';
 import React from 'react';
-
+import {useSelector} from 'react-redux';
 const ProductDetail = ({navigation}) => {
   const [size, setSize] = React.useState('S');
+  const theme = useSelector(state => state.SwitchColor);
   return (
-    <View style={Style.container}>
+    <View
+      style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{width: '100%'}}>
@@ -19,12 +21,17 @@ const ProductDetail = ({navigation}) => {
           source={{
             uri: 'https://cdn-icons-png.flaticon.com/512/151/151846.png',
           }}
-          style={Style.backImage}
+          style={
+            theme.color === 'white' ? Style.backImage : Style.backImageDark
+          }
           resizeMode="center"
         />
       </TouchableOpacity>
 
-      <View style={Style.boderImage}>
+      <View
+        style={
+          theme.color === 'white' ? Style.boderImage : Style.boderImageDark
+        }>
         <Image
           source={{
             uri: 'https://krookedfaces.com/cdn/shop/products/unisex-crew-neck-sweatshirt-navy-front-62f181e9d68c4.jpg?v=1659994632&width=2000',
@@ -34,12 +41,16 @@ const ProductDetail = ({navigation}) => {
         />
       </View>
       <View style={Style.content}>
-        <Text style={Style.text1}>Navy KROOKED sweater</Text>
-        <Text style={Style.text2}>
+        <Text style={theme.color === 'white' ? Style.text1 : Style.text1Dark}>
+          Navy KROOKED sweater
+        </Text>
+        <Text style={theme.cart === 'white' ? Style.text2 : Style.text2Dark}>
           Hand-woven 100% cotton KROOKED rugby jearsey in baby blue/navy retro
           colour way.
         </Text>
-        <Text style={Style.text3}>R 1,750</Text>
+        <Text style={theme.color === 'white' ? Style.text3 : Style.text3Dark}>
+          R 1,750
+        </Text>
         <View style={Style.footer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable onPress={() => setSize('S')}>
@@ -97,6 +108,12 @@ const Style = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  containerDark: {
+    flex: 1,
+    backgroundColor: '#111111',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
   boderImage: {
     width: '100%',
     borderWidth: 1,
@@ -107,6 +124,17 @@ const Style = StyleSheet.create({
     marginTop: 30,
     flex: 4.6,
   },
+  boderImageDark: {
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    flex: 4.6,
+    backgroundColor: '#222222',
+  },
+
   productImage: {
     width: '80%',
     height: '80%',
@@ -121,8 +149,16 @@ const Style = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
+  text1Dark: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 20,
+  },
   text2: {color: '#B0B0B0', marginBottom: 20},
+  text2Dark: {color: 'white', marginBottom: 20},
   text3: {fontWeight: 'bold', fontSize: 20, color: 'black'},
+  text3Dark: {fontWeight: 'bold', fontSize: 20, color: 'white'},
   size: {
     width: 35,
     height: 35,
@@ -136,7 +172,7 @@ const Style = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 100,
-    backgroundColor: 'red',
+    backgroundColor: 'darkviolet',
     justifyContent: 'center',
     marginRight: 13,
     alignItems: 'center',
@@ -172,6 +208,12 @@ const Style = StyleSheet.create({
     height: 45,
     marginTop: 20,
     tintColor: 'black',
+  },
+  backImageDark: {
+    width: 35,
+    height: 45,
+    marginTop: 20,
+    tintColor: 'white',
   },
 });
 export default ProductDetail;

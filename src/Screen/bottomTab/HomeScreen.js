@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, Pressable} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -15,23 +15,35 @@ import Shoes from '../clothes/Shoes';
 import Underwear from '../clothes/Underwear';
 import Animated from 'react-native-reanimated';
 import Tops from '../clothes/Tops';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {SwitchColor} from '../../redux/action';
+import {setColorToStorage} from '../../service';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = props => {
-  const progress = useDrawerProgress();
+  const theme = useSelector(state => state.SwitchColor);
 
-  // If you are on react-native-reanimated 1.x, use `Animated.interpolate` instead of `Animated.interpolateNode`
+  const progress = useDrawerProgress();
+  const dispatch = useDispatch();
+  // If you are on react-native-reanimated 1.x, use Animated.interpolate instead of Animated.interpolateNode
   const translateX = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [-100, 0],
   });
   return (
-    <DrawerContentScrollView {...props} style={Style.drawContainer}>
+    <DrawerContentScrollView
+      {...props}
+      style={
+        theme.color === 'white'
+          ? Style.drawContainerWhite
+          : Style.drawContainerDark
+      }>
       <Animated.View style={{transform: [{translateX}]}}>
         <View style={Style.childDrawer}>
           <Image
             source={require('../../public/image/avata.png')}
-            style={Style.image}
+            style={theme.color === 'white' ? Style.imageWhite : Style.imageDark}
           />
         </View>
         <DrawerItemList {...props} />
@@ -50,14 +62,26 @@ const CustomDrawerContent = props => {
           onPress={() => props.navigation.toggleDrawer()}
         />
         <View style={{width: '100%', paddingHorizontal: 10}}>
-          <View style={Style.bottomDrawer}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/1687/1687788.png',
-              }}
-              style={Style.light_bulb}
-            />
-          </View>
+          <Pressable
+            onPress={() => {
+              dispatch(SwitchColor(theme.color === 'white' ? 'dark' : 'white'));
+              setColorToStorage(theme.color === 'white' ? 'dark' : 'white');
+            }}>
+            <View style={Style.bottomDrawer}>
+              <Image
+                source={
+                  theme.color === 'white'
+                    ? {
+                        uri: 'https://cdn-icons-png.flaticon.com/512/1687/1687788.png',
+                      }
+                    : {
+                        uri: 'https://cdn-icons-png.flaticon.com/512/4489/4489231.png',
+                      }
+                }
+                style={Style.light_bulb}
+              />
+            </View>
+          </Pressable>
         </View>
       </Animated.View>
     </DrawerContentScrollView>
@@ -65,18 +89,30 @@ const CustomDrawerContent = props => {
 };
 
 function HomeScreen() {
+  const theme = useSelector(state => state.SwitchColor);
   return (
     <Drawer.Navigator
       useLegacyImplementation
       drawerContent={props => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        headerShown: false,
-        drawerLabelStyle: {
-          fontWeight: 'bold',
-          color: '#333333',
-        },
-        drawerActiveBackgroundColor: 'darkviolet',
-      }}>
+      screenOptions={
+        theme.color === 'white'
+          ? {
+              headerShown: false,
+              drawerLabelStyle: {
+                fontWeight: 'bold',
+                color: '#333333',
+              },
+              drawerActiveBackgroundColor: 'darkviolet',
+            }
+          : {
+              headerShown: false,
+              drawerLabelStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+              drawerActiveBackgroundColor: 'darkviolet',
+            }
+      }>
       <Drawer.Screen
         name="Tops"
         component={Tops}
@@ -86,7 +122,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/5632/5632749.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -101,7 +137,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/2774/2774378.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -116,7 +152,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/6012/6012257.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -131,7 +167,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/9322/9322704.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -146,7 +182,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/512/80/80807.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -161,7 +197,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/2093/2093938.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -176,7 +212,7 @@ function HomeScreen() {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/64/64572.png',
               }}
-              style={{width: 30, height: 30}}
+              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
             />
           ),
@@ -186,10 +222,18 @@ function HomeScreen() {
   );
 }
 const Style = StyleSheet.create({
-  image: {
+  imageWhite: {
     marginVertical: 30,
   },
-  drawContainer: {
+  imageDark: {
+    marginVertical: 30,
+    tintColor: 'white',
+  },
+  drawContainerDark: {
+    flex: 1,
+    backgroundColor: '#111111',
+  },
+  drawContainerWhite: {
     flex: 1,
   },
   childDrawer: {
@@ -213,5 +257,7 @@ const Style = StyleSheet.create({
     marginTop: 30,
     marginBottom: 20,
   },
+  iconDark: {width: 30, height: 30, tintColor: 'white'},
+  iconWhite: {width: 30, height: 30},
 });
 export default HomeScreen;
