@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import Item from '../../components/Item';
-
-const UnderWear = ({navigation}) => {
+import {useSelector} from 'react-redux';
+const Underwear = ({navigation}) => {
   const FakeData = [
     {
       id: 1,
@@ -95,17 +95,21 @@ const UnderWear = ({navigation}) => {
       setRefreshing(false);
     }, 2000);
   }, []);
+  const theme = useSelector(state => state.SwitchColor);
   return (
-    <View style={Style.container}>
+    <View
+      style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
       <View style={Style.header}>
-        <Text style={Style.text}>UnderWear</Text>
+        <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+          Underwear
+        </Text>
         <Pressable onPress={() => navigation.toggleDrawer()}>
           <Image
             source={{
               uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
             }}
-            style={Style.image}
+            style={theme.color === 'white' ? Style.image : Style.imageDark}
           />
         </Pressable>
       </View>
@@ -141,7 +145,12 @@ const Style = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: 'white',
   },
-
+  containerDark: {
+    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    backgroundColor: '#111111',
+  },
   header: {
     width: '100%',
     flexDirection: 'row',
@@ -155,10 +164,21 @@ const Style = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  textDark: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   image: {
     width: 25,
     height: 25,
     resizeMode: 'center',
   },
+  imageDark: {
+    width: 25,
+    height: 25,
+    resizeMode: 'center',
+    tintColor: 'white',
+  },
 });
-export default UnderWear;
+export default Underwear;
