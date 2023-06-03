@@ -13,7 +13,6 @@ const MainStack = () => {
 
   const getTheme = async () => {
     const value = await getColorToStorage();
-    console.log(value);
     return dispatch(SwitchColor(value));
   };
 
