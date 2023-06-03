@@ -82,12 +82,15 @@ const Tops = ({navigation}) => {
           <View style={{width: '100%'}}>
             <Text style={Style.text}>Vans Venice collection</Text>
           </View>
-          <Image
-            source={{
-              uri: 'https://vans-static.nyc3.digitaloceanspaces.com/vans-skatebording/2022/03/itsxapa.jpg',
-            }}
-            style={Style.imageLarge}
-          />
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('VansVeniceDetail')}>
+            <Image
+              source={{
+                uri: 'https://vans-static.nyc3.digitaloceanspaces.com/vans-skatebording/2022/03/itsxapa.jpg',
+              }}
+              style={Style.imageLarge}
+            />
+          </TouchableWithoutFeedback>
         </View>
         <View style={Style.header}>
           <Text style={Style.text}>Best sellers</Text>
@@ -156,7 +159,6 @@ const Style = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 25,
   },
 });
 export default Tops;
