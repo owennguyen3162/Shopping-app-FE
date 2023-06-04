@@ -56,7 +56,11 @@ const Tops = ({navigation}) => {
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
       <View style={Style.header}>
-        <Text style={Style.text}></Text>
+        <Image
+          source={require('../../public/image/avata.png')}
+          style={theme.color === 'white' ? Style.Logo : Style.LogoDark}
+          resizeMode="stretch"
+        />
         <TouchableWithoutFeedback onPress={() => navigation.toggleDrawer()}>
           <Image
             source={{
@@ -150,7 +154,7 @@ const Style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 20,
-    marginBottom: 25,
+    marginBottom: 20,
   },
   text: {
     color: '#000000',
@@ -186,5 +190,7 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  Logo: {width: 120, height: 45},
+  LogoDark: {tintColor: 'white', width: 120, height: 45},
 });
 export default Tops;
