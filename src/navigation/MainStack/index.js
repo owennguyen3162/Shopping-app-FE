@@ -2,7 +2,7 @@ import React from 'react';
 import {getColorToStorage} from '../../service';
 import AuthStack from '../Auth';
 import HomeStack from '../Home';
-import {SwitchColor} from '../../redux/action';
+import {SwitchColor} from '../../redux/action/changeColor';
 import {useDispatch} from 'react-redux';
 const isLogined = true;
 const MainStack = () => {
