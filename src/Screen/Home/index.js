@@ -1,4 +1,3 @@
-import {ScreenOption} from '../../utils/ScreenOptions';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../bottomTab/HomeScreen';
 import ChatScreen from '../bottomTab/ChatScreen';
@@ -20,7 +19,7 @@ function Home() {
               tabBarActiveTintColor: 'darkorchid',
               tabBarInactiveTintColor: 'silver',
               tabBarLabelStyle: {
-                fontSize: 11,
+                fontSize: 10,
               },
             }
           : {
@@ -28,7 +27,7 @@ function Home() {
               tabBarActiveTintColor: 'darkorchid',
               tabBarInactiveTintColor: 'white',
               tabBarLabelStyle: {
-                fontSize: 11,
+                fontSize: 10,
               },
               tabBarStyle: {
                 backgroundColor: '#111111',
@@ -40,7 +39,7 @@ function Home() {
         component={HomeScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <HomeIcon name="home" size={27} color={color} />
+            <HomeIcon name="home" size={22} color={color} />
           ),
           tabBarLabel: 'Home',
         }}
@@ -50,7 +49,7 @@ function Home() {
         component={ChatScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <ChatIcon name="message-circle" size={27} color={color} />
+            <ChatIcon name="message-circle" size={22} color={color} />
           ),
         }}
       />
@@ -59,7 +58,7 @@ function Home() {
         component={CartScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <CartIcon name="shopping-cart" size={27} color={color} />
+            <CartIcon name="shopping-cart" size={22} color={color} />
           ),
           tabBarBadge: 3,
         }}
