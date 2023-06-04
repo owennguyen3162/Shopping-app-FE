@@ -16,7 +16,8 @@ const Item = props => {
           {name}
         </Text>
         <Text
-          style={theme.color === 'white' ? Style.textDesc : Style.textDescDark}>
+          style={theme.color === 'white' ? Style.textDesc : Style.textDescDark}
+          numberOfLines={3}>
           {description}
         </Text>
         <Text
@@ -79,8 +80,8 @@ const Style = StyleSheet.create({
   },
   TextName: {color: 'black', fontWeight: 'bold'},
   TextNameDark: {color: 'white', fontWeight: 'bold'},
-  textDesc: {width: '45%', fontSize: 12.5, color: 'black'},
-  textDescDark: {width: '45%', fontSize: 12.5, color: 'white'},
+  textDesc: {width: '35%', fontSize: 12.5, color: 'black'},
+  textDescDark: {width: '35%', fontSize: 12.5, color: 'white'},
   textPrice: {color: 'black', fontWeight: 'bold'},
   textPriceDark: {color: 'white', fontWeight: 'bold'},
 });
