@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
-const ProductDetail = ({navigation}) => {
+const ProductDetail = ({navigation, route}) => {
   const [size, setSize] = React.useState('S');
   const theme = useSelector(state => state.SwitchColor);
+  const {name, image, id, description, price} = route.params;
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -34,7 +35,7 @@ const ProductDetail = ({navigation}) => {
         }>
         <Image
           source={{
-            uri: 'https://krookedfaces.com/cdn/shop/products/unisex-crew-neck-sweatshirt-navy-front-62f181e9d68c4.jpg?v=1659994632&width=2000',
+            uri: image,
           }}
           style={Style.productImage}
           resizeMode="contain"
@@ -42,14 +43,13 @@ const ProductDetail = ({navigation}) => {
       </View>
       <View style={Style.content}>
         <Text style={theme.color === 'white' ? Style.text1 : Style.text1Dark}>
-          Navy KROOKED sweater
+          {name}
         </Text>
         <Text style={theme.cart === 'white' ? Style.text2 : Style.text2Dark}>
-          Hand-woven 100% cotton KROOKED rugby jearsey in baby blue/navy retro
-          colour way.
+          {description}
         </Text>
         <Text style={theme.color === 'white' ? Style.text3 : Style.text3Dark}>
-          R 1,750
+          R {price}
         </Text>
         <View style={Style.footer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>

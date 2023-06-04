@@ -1,11 +1,10 @@
-export const CHANG_COLOR = 'CHANG_COLR';
-
+import {CHANGE_COLOR} from '../action/types';
 const initState = {
   color: 'white',
 };
 export default function changeColor(state = initState, payload) {
   switch (payload.type) {
-    case CHANG_COLOR:
+    case CHANGE_COLOR:
       return {
         color: payload.color,
       };

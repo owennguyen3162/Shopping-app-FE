@@ -17,7 +17,7 @@ import Animated from 'react-native-reanimated';
 import Tops from '../clothes/Tops';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {SwitchColor} from '../../redux/action';
+import {SwitchColor} from '../../redux/action/changeColor';
 import {setColorToStorage} from '../../service';
 const Drawer = createDrawerNavigator();
 
