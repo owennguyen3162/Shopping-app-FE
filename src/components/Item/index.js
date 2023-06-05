@@ -80,8 +80,12 @@ const Style = StyleSheet.create({
   },
   TextName: {color: 'black', fontWeight: 'bold'},
   TextNameDark: {color: 'white', fontWeight: 'bold'},
-  textDesc: {width: '35%', fontSize: 12.5, color: 'black'},
-  textDescDark: {width: '35%', fontSize: 12.5, color: 'white'},
+  textDesc: {width: 220, fontSize: 12.5, color: 'black'},
+  textDescDark: {
+    width: 220,
+    fontSize: 12.5,
+    color: 'white',
+  },
   textPrice: {color: 'black', fontWeight: 'bold'},
   textPriceDark: {color: 'white', fontWeight: 'bold'},
 });
