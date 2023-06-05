@@ -12,15 +12,11 @@ import {
 } from 'react-native';
 import React from 'react';
 import Item from '../../components/Item';
-import {useSelector, useDispatch} from 'react-redux';
-import {GetAllProductByCategory} from '../../redux/action/Api';
+import {useSelector} from 'react-redux';
 const Accesories = ({navigation}) => {
-  const dispatch = useDispatch();
-  const data = useSelector(data => data.API);
-  React.useEffect(() => {
-    dispatch(GetAllProductByCategory('accesories'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // React.useEffect(() => {
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -35,55 +31,55 @@ const Accesories = ({navigation}) => {
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
-      {data.isLoading ? (
+      {/* {data.isLoading ? (
         <ActivityIndicator size={'large'} />
       ) : (
-        <>
-          <View style={Style.header}>
-            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-              Accesories
-            </Text>
-            <Pressable onPress={() => navigation.toggleDrawer()}>
-              <Image
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
-                }}
-                style={theme.color === 'white' ? Style.image : Style.imageDark}
+        <> */}
+      <View style={Style.header}>
+        <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+          Accesories
+        </Text>
+        <Pressable onPress={() => navigation.toggleDrawer()}>
+          <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
+            }}
+            style={theme.color === 'white' ? Style.image : Style.imageDark}
+          />
+        </Pressable>
+      </View>
+      <View style={{width: '100%', height: '91%'}}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          keyExtractor={item => item.id}
+          data={[]}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          renderItem={({item}) => (
+            <Pressable
+              onPress={() =>
+                navigation.navigate('ProductDetail', {
+                  id: item.id,
+                  image: item.image,
+                  name: item.name,
+                  description: item.description,
+                  price: item.price,
+                })
+              }>
+              <Item
+                image={item.image}
+                name={item.name}
+                description={item.description}
+                price={item.price}
               />
             </Pressable>
-          </View>
-          <View style={{width: '100%', height: '91%'}}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-              keyExtractor={item => item.id}
-              data={data.data}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-              renderItem={({item}) => (
-                <Pressable
-                  onPress={() =>
-                    navigation.navigate('ProductDetail', {
-                      id: item.id,
-                      image: item.image,
-                      name: item.name,
-                      description: item.description,
-                      price: item.price,
-                    })
-                  }>
-                  <Item
-                    image={item.image}
-                    name={item.name}
-                    description={item.description}
-                    price={item.price}
-                  />
-                </Pressable>
-              )}
-            />
-          </View>
-        </>
-      )}
+          )}
+        />
+      </View>
+      {/* </>
+      )} */}
     </View>
   );
 };

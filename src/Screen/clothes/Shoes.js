@@ -12,13 +12,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import Item from '../../components/Item';
-import {useSelector, useDispatch} from 'react-redux';
-import {GetAllProductByCategory} from '../../redux/action/Api';
+import {useSelector} from 'react-redux';
 const Shoes = ({navigation}) => {
-  const dispatch = useDispatch();
-  const data = useSelector(data => data.API);
   React.useEffect(() => {
-    dispatch(GetAllProductByCategory('shoes'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -35,25 +31,25 @@ const Shoes = ({navigation}) => {
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
-      {data.isLoading ? (
+      {/* {data.isLoading ? (
         <ActivityIndicator size={'large'} />
       ) : (
-        <>
-          <View style={Style.header}>
-            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-              Shoes
-            </Text>
-            <Pressable onPress={() => navigation.toggleDrawer()}>
-              <Image
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
-                }}
-                style={theme.color === 'white' ? Style.image : Style.imageDark}
-              />
-            </Pressable>
-          </View>
-          <View style={{width: '100%', height: '91%'}}>
-            <FlatList
+        <> */}
+      <View style={Style.header}>
+        <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+          Shoes
+        </Text>
+        <Pressable onPress={() => navigation.toggleDrawer()}>
+          <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
+            }}
+            style={theme.color === 'white' ? Style.image : Style.imageDark}
+          />
+        </Pressable>
+      </View>
+      <View style={{width: '100%', height: '91%'}}>
+        {/* <FlatList
               showsVerticalScrollIndicator={false}
               initialNumToRender={10}
               keyExtractor={item => item.id}
@@ -80,10 +76,10 @@ const Shoes = ({navigation}) => {
                   />
                 </Pressable>
               )}
-            />
-          </View>
-        </>
-      )}
+            /> */}
+      </View>
+      {/* </>
+      )} */}
     </View>
   );
 };
