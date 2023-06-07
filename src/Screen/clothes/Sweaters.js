@@ -112,12 +112,14 @@ const Style = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     backgroundColor: 'white',
+    justifyContent: 'center',
   },
   containerDark: {
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 15,
     backgroundColor: '#111111',
+    justifyContent: 'center',
   },
   header: {
     width: '100%',
