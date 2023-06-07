@@ -5,13 +5,37 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
+import instance from '../../service/axios';
+import {getUserId} from '../../service/user.service';
 const ProductDetail = ({navigation, route}) => {
   const [size, setSize] = React.useState('S');
+  const [isLoading, setIsLoading] = React.useState(false);
   const theme = useSelector(state => state.SwitchColor);
   const {name, image, id, description, price} = route.params;
+  const handleAddToCart = async () => {
+    setIsLoading(true);
+    try {
+      const res = await instance.post('/api/cart/addToCart', {
+        userId: await getUserId(),
+        productId: id,
+        size: size,
+      });
+      if (res.status === 201) {
+        return Alert.alert('Notification', 'Add to cart successfully', [
+          {text: 'OK'},
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Warning', 'Add to cart fail', [{text: 'OK'}]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -129,15 +153,21 @@ const ProductDetail = ({navigation, route}) => {
               )}
             </Pressable>
           </View>
-          <View style={Style.cart}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/2438/2438133.png',
-              }}
-              style={Style.cartImage}
-              resizeMode="center"
-            />
-          </View>
+          <Pressable onPress={() => handleAddToCart()}>
+            <View style={Style.cart}>
+              {isLoading ? (
+                <ActivityIndicator size={'large'} />
+              ) : (
+                <Image
+                  source={{
+                    uri: 'https://cdn-icons-png.flaticon.com/512/2438/2438133.png',
+                  }}
+                  style={Style.cartImage}
+                  resizeMode="center"
+                />
+              )}
+            </View>
+          </Pressable>
         </View>
       </View>
     </View>

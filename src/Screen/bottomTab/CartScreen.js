@@ -5,119 +5,184 @@ import {
   FlatList,
   Pressable,
   RefreshControl,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import ItemCart from '../../components/ItemCart';
+import instance from '../../service/axios';
+import {getUserId} from '../../service/user.service';
+import {RadioButton} from 'react-native-paper';
 const CartScreen = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
-  const FakeData = [
-    {
-      id: 1,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 2,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 3,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 4,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-  ];
+  const [data, setData] = React.useState([]);
+  const [price, setPrice] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [option, setOption] = React.useState(50);
+  React.useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const getData = async () => {
+    try {
+      const res = await instance.get('/api/cart/' + (await getUserId()));
+      if (res.status === 200) {
+        setData(res.data);
+        setPrice(handle_TotalPrice(res.data));
+      }
+    } catch (error) {
+      Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handle_Checkout = async () => {
+    console.log('HANDLE CHECKOUT');
+  };
+  const handle_TotalPrice = data => {
+    return data.reduce((total, item, index) => {
+      return (total += item.price);
+    }, 0);
+  };
+
+  const handleRemoveItem = async id => {
+    setIsLoading(true);
+    try {
+      const res = await instance.delete(`/api/cart/removeToCart/${id}`);
+      if (res.status === 204) {
+        getData();
+      }
+    } catch (error) {
+      Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
         Your Cart
       </Text>
-      <View style={{flex: 5}}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={10}
-          keyExtractor={item => item.id}
-          data={FakeData}
-          renderItem={({item}) => (
-            <Pressable onPress={() => navigation.navigate('ProductDetail')}>
-              <ItemCart
-                image={item.image}
-                name={item.name}
-                description={item.description}
-                price={item.price}
-              />
-            </Pressable>
-          )}
-        />
-      </View>
-      <View style={{flex: 4}}>
-        <Text
-          style={
-            theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
-          }>
-          Shipping address
-        </Text>
-        <Text
-          style={theme.color === 'white' ? Style.textBold : Style.textBoldDark}>
-          Ba vi, Ha Noi
-        </Text>
-        <Text
-          style={
-            theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
-          }>
-          Options
-        </Text>
-        <Text
-          style={theme.color === 'white' ? Style.textBold : Style.textBoldDark}>
-          Fast delivery
-        </Text>
-        <Text
-          style={theme.color === 'white' ? Style.textBold : Style.textBoldDark}>
-          Slow delivery
-        </Text>
-        <View
-          style={theme.color === 'white' ? Style.line : Style.lineDark}></View>
-        <View style={Style.footer}>
-          <Text
-            style={
-              theme.color === 'white' ? Style.textFooter : Style.textFooterDark
-            }>
-            Total
-          </Text>
-          <Text
-            style={
-              theme.color === 'white' ? Style.textFooter : Style.textFooterDark
-            }>
-            R 200
+      {isLoading ? (
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <ActivityIndicator size={'large'} />
+        </View>
+      ) : data.length === 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
+            CART EMPTY
           </Text>
         </View>
-        <Text style={theme.color === 'white' ? Style.button : Style.buttonDark}>
-          CHECK OUT
-        </Text>
-      </View>
+      ) : (
+        <>
+          <View style={{flex: 5}}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
+              keyExtractor={item => item.id}
+              data={data}
+              renderItem={({item}) => (
+                <Pressable>
+                  <ItemCart
+                    image={item.image}
+                    name={item.name}
+                    description={item.description}
+                    price={item.price}
+                    size={item.size}
+                    getIdItem={handleRemoveItem}
+                    id={item.id}
+                  />
+                </Pressable>
+              )}
+            />
+          </View>
+          <View style={{flex: 4}}>
+            <Text
+              style={
+                theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
+              }>
+              Shipping address
+            </Text>
+            <Text
+              style={
+                theme.color === 'white' ? Style.textBold : Style.textBoldDark
+              }>
+              Ba vi, Ha Noi
+            </Text>
+            <Text
+              style={
+                theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
+              }>
+              Options
+            </Text>
+
+            <View>
+              <View style={{flexDirection: 'row'}}>
+                <RadioButton
+                  status={option === 50 ? 'checked' : 'unchecked'}
+                  onPress={() => setOption(50)}
+                />
+                <Text
+                  style={
+                    theme.color === 'white'
+                      ? Style.textBold
+                      : Style.textBoldDark
+                  }>
+                  Slow delivery ($50)
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <RadioButton
+                  status={option === 100 ? 'checked' : 'unchecked'}
+                  onPress={() => setOption(100)}
+                />
+                <Text
+                  style={
+                    theme.color === 'white'
+                      ? Style.textBold
+                      : Style.textBoldDark
+                  }>
+                  Fast delivery ($100)
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                theme.color === 'white' ? Style.line : Style.lineDark
+              }></View>
+            <View style={Style.footer}>
+              <Text
+                style={
+                  theme.color === 'white'
+                    ? Style.textFooter
+                    : Style.textFooterDark
+                }>
+                Total
+              </Text>
+              <Text
+                style={
+                  theme.color === 'white'
+                    ? Style.textFooter
+                    : Style.textFooterDark
+                }>
+                $ {price + option}
+              </Text>
+            </View>
+
+            <Pressable onPress={handle_Checkout}>
+              <Text
+                style={
+                  theme.color === 'white' ? Style.button : Style.buttonDark
+                }>
+                CHECK OUT
+              </Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -183,8 +248,8 @@ const Style = StyleSheet.create({
     marginVertical: 10,
   },
   footer: {flexDirection: 'row', justifyContent: 'space-between'},
-  textFooter: {color: 'black'},
-  textFooterDark: {color: 'white'},
+  textFooter: {color: 'black', fontWeight: 'bold'},
+  textFooterDark: {color: 'white', fontWeight: 'bold'},
   textBold2: {
     color: 'black',
     marginTop: 10,
