@@ -7,11 +7,47 @@ import {
   KeyboardAvoidingView,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React from 'react';
+import instance from '../../service/axios';
 const Register = ({navigation}) => {
   const navigationLogin = () => {
     navigation.goBack();
+  };
+  const [phone, setphone] = React.useState(null);
+  const [name, setName] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+  const [verify, setVerify] = React.useState(null);
+
+  const handleRegister = async () => {
+    if (!phone || !name || !password || !verify) {
+      return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
+    if (password !== verify) {
+      return Alert.alert('Warning', 'Verify not match password', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
+
+    try {
+      const res = await instance.post('/api/user/createAccount', {
+        phone,
+        name,
+        password,
+      });
+      if (res.status === 201) {
+        Alert.alert('Notification', 'Register successfully', [
+          {text: 'OK', style: 'cancel'},
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Notification', 'Register Fail', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
   };
   return (
     <View style={Style.container}>
@@ -20,12 +56,30 @@ const Register = ({navigation}) => {
         source={require('../../public/image/avata.png')}
         style={Style.image}
       />
-      <TextInput style={Style.textInput} placeholder="Email" />
-      <TextInput style={Style.textInput} placeholder="Name" />
-      <TextInput style={Style.textInput} placeholder="Password" />
-      <TextInput style={Style.textInput} placeholder="RePassword" />
+      <TextInput
+        style={Style.textInput}
+        placeholder="phone"
+        onChangeText={text => setphone(text)}
+      />
+      <TextInput
+        style={Style.textInput}
+        placeholder="Name"
+        onChangeText={text => setName(text)}
+      />
+      <TextInput
+        style={Style.textInput}
+        placeholder="Password"
+        onChangeText={text => setPassword(text)}
+        secureTextEntry
+      />
+      <TextInput
+        style={Style.textInput}
+        placeholder="Verify"
+        onChangeText={text => setVerify(text)}
+        secureTextEntry
+      />
 
-      <TouchableOpacity style={Style.button}>
+      <TouchableOpacity style={Style.button} onPress={() => handleRegister()}>
         <Text style={Style.fontLogin}>REGISTER</Text>
       </TouchableOpacity>
       <View style={Style.row}>
