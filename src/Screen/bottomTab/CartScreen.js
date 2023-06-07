@@ -18,6 +18,7 @@ const CartScreen = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
   const [price, setPrice] = React.useState(0);
+  const [address, setAddress] = React.useState('ba vi, Ha noi');
   const [isLoading, setIsLoading] = React.useState(true);
   const [option, setOption] = React.useState(50);
   React.useEffect(() => {
@@ -38,7 +39,24 @@ const CartScreen = ({navigation}) => {
     }
   };
   const handle_Checkout = async () => {
-    console.log('HANDLE CHECKOUT');
+    setIsLoading(true);
+    try {
+      const res = await instance.post(
+        `/api/cart/checkout/${await getUserId()}`,
+        {
+          address: address,
+          totalPrice: price + option,
+          options: option,
+        },
+      );
+      if (res.status === 201) {
+        getData();
+      }
+    } catch (error) {
+      Alert.alert('notification', 'error:::' + error, [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
   };
   const handle_TotalPrice = data => {
     return data.reduce((total, item, index) => {
@@ -67,11 +85,11 @@ const CartScreen = ({navigation}) => {
         Your Cart
       </Text>
       {isLoading ? (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+        <View style={Style.centerScreen}>
           <ActivityIndicator size={'large'} />
         </View>
       ) : data.length === 0 ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={Style.centerScreen}>
           <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
             CART EMPTY
           </Text>
@@ -261,6 +279,11 @@ const Style = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  centerScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default CartScreen;
