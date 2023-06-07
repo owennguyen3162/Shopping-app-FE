@@ -7,131 +7,158 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   ScrollView,
+  ActivityIndicator,
+  Pressable,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import ItemHorizontal from '../../components/ItemHorizontal';
 import {useSelector} from 'react-redux';
+import instance from '../../service/axios';
 const Tops = ({navigation}) => {
-  const FakeData = [
-    {
-      id: 1,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 2,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 3,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 4,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-  ];
   const theme = useSelector(state => state.SwitchColor);
+
+  const [Data, setData] = React.useState([]);
+  const [dataSelling, setBestSelling] = React.useState([]);
+
+  const [isloading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await instance.get('/api/products/newArrivals');
+      const bestSelling = await instance.get('/api/products/bestSelling');
+      setData(data.data.data);
+      setBestSelling(bestSelling.data.data);
+    } catch (error) {
+      {
+        console.log(error);
+        Alert.alert('Warning', 'server error', [{text: 'ok'}]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
-      <View style={Style.header}>
-        <Image
-          source={require('../../public/image/avata.png')}
-          style={theme.color === 'white' ? Style.Logo : Style.LogoDark}
-          resizeMode="stretch"
-        />
-        <TouchableWithoutFeedback onPress={() => navigation.toggleDrawer()}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
-            }}
-            style={theme.color === 'white' ? Style.image : Style.imageDark}
-          />
-        </TouchableWithoutFeedback>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={Style.header}>
-          <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-            New arrivals
-          </Text>
-        </View>
-        <View style={{width: '100%'}}>
-          <FlatList
-            initialNumToRender={10}
-            keyExtractor={item => item.id}
-            data={FakeData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => <ItemHorizontal image={item.image} />}
-          />
-        </View>
-        <View style={Style.view}>
-          <View style={{width: '100%'}}>
-            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-              Vans Venice collection
-            </Text>
-          </View>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('VansVeniceDetail')}>
+      {isloading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <>
+          <View style={Style.header}>
             <Image
-              source={{
-                uri: 'https://vans-static.nyc3.digitaloceanspaces.com/vans-skatebording/2022/03/itsxapa.jpg',
-              }}
-              style={Style.imageLarge}
+              source={require('../../public/image/avata.png')}
+              style={theme.color === 'white' ? Style.Logo : Style.LogoDark}
+              resizeMode="stretch"
             />
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={Style.header}>
-          <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-            Best sellers
-          </Text>
-        </View>
-        <View style={{width: '100%'}}>
-          <FlatList
-            initialNumToRender={10}
-            keyExtractor={item => item.id}
-            data={FakeData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => <ItemHorizontal image={item.image} />}
-          />
-        </View>
-
-        <View style={Style.view}>
-          <View style={{width: '100%'}}>
-            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-              Vans Wayvee drop
-            </Text>
+            <TouchableWithoutFeedback onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
+                }}
+                style={theme.color === 'white' ? Style.image : Style.imageDark}
+              />
+            </TouchableWithoutFeedback>
           </View>
-          <Image
-            source={{
-              uri: 'https://ei7ew96pew2.exactdn.com/wp-content/uploads/2019/10/vans-the-nightmare-before-christmas-1190148.jpeg?strip=all&lossy=1&ssl=1',
-            }}
-            style={Style.imageLarge}
-          />
-        </View>
-      </ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={Style.header}>
+              <Text
+                style={theme.color === 'white' ? Style.text : Style.textDark}>
+                New arrivals
+              </Text>
+            </View>
+            <View style={{width: '100%'}}>
+              <FlatList
+                initialNumToRender={3}
+                keyExtractor={item => item.id}
+                data={Data}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('ProductDetail', {
+                        id: item.id,
+                        image: item.image,
+                        name: item.name,
+                        description: item.description,
+                        price: item.price,
+                      })
+                    }>
+                    <ItemHorizontal image={item.image} />
+                  </Pressable>
+                )}
+              />
+            </View>
+            <View style={Style.view}>
+              <View style={{width: '100%'}}>
+                <Text
+                  style={theme.color === 'white' ? Style.text : Style.textDark}>
+                  Vans Venice collection
+                </Text>
+              </View>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('VansVeniceDetail')}>
+                <Image
+                  source={{
+                    uri: 'https://vans-static.nyc3.digitaloceanspaces.com/vans-skatebording/2022/03/itsxapa.jpg',
+                  }}
+                  style={Style.imageLarge}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={Style.header}>
+              <Text
+                style={theme.color === 'white' ? Style.text : Style.textDark}>
+                Best selling
+              </Text>
+            </View>
+            <View style={{width: '100%'}}>
+              <FlatList
+                initialNumToRender={3}
+                keyExtractor={item => item.id}
+                data={dataSelling}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('ProductDetail', {
+                        id: item.id,
+                        image: item.image,
+                        name: item.name,
+                        description: item.description,
+                        price: item.price,
+                      })
+                    }>
+                    <ItemHorizontal image={item.image} />
+                  </Pressable>
+                )}
+              />
+            </View>
+
+            <View style={Style.view}>
+              <View style={{width: '100%'}}>
+                <Text
+                  style={theme.color === 'white' ? Style.text : Style.textDark}>
+                  Vans Wayvee drop
+                </Text>
+              </View>
+              <Image
+                source={{
+                  uri: 'https://ei7ew96pew2.exactdn.com/wp-content/uploads/2019/10/vans-the-nightmare-before-christmas-1190148.jpeg?strip=all&lossy=1&ssl=1',
+                }}
+                style={Style.imageLarge}
+              />
+            </View>
+          </ScrollView>
+        </>
+      )}
     </View>
   );
 };
