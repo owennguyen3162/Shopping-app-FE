@@ -9,51 +9,73 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import Item from '../../components/Item';
 import {useSelector} from 'react-redux';
-const Shoes = ({navigation}) => {
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+import instance from '../../service/axios';
 
+const Shoes = ({navigation}) => {
+  const [data, setData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    fetchData();
   }, []);
+
+  const fetchData = () => {
+    instance
+      .get('/api/products/shoes')
+      .then(data => {
+        data.status === 200
+          ? setData(data.data.data)
+          : Alert.alert('warning', 'Get Data Fail', [
+              {text: 'ok', style: 'cancel'},
+            ]);
+      })
+      .catch(error =>
+        Alert.alert('warning', 'server error', [{text: 'ok', style: 'cancel'}]),
+      )
+      .finally(() => {
+        setIsLoading(false);
+        setRefreshing(false);
+      });
+  };
   const theme = useSelector(state => state.SwitchColor);
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
-      {/* {data.isLoading ? (
+      {isLoading ? (
         <ActivityIndicator size={'large'} />
       ) : (
-        <> */}
-      <View style={Style.header}>
-        <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-          Shoes
-        </Text>
-        <Pressable onPress={() => navigation.toggleDrawer()}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
-            }}
-            style={theme.color === 'white' ? Style.image : Style.imageDark}
-          />
-        </Pressable>
-      </View>
-      <View style={{width: '100%', height: '91%'}}>
-        {/* <FlatList
+        <>
+          <View style={Style.header}>
+            <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
+              Shoes
+            </Text>
+            <Pressable onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
+                }}
+                style={theme.color === 'white' ? Style.image : Style.imageDark}
+              />
+            </Pressable>
+          </View>
+          <View style={{width: '100%', height: '91%'}}>
+            <FlatList
               showsVerticalScrollIndicator={false}
               initialNumToRender={10}
               keyExtractor={item => item.id}
-              data={data.data}
+              data={data}
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
@@ -76,10 +98,10 @@ const Shoes = ({navigation}) => {
                   />
                 </Pressable>
               )}
-            /> */}
-      </View>
-      {/* </>
-      )} */}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };
