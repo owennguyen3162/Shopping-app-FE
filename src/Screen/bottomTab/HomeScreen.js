@@ -19,6 +19,8 @@ import Tops from '../clothes/Tops';
 import {useSelector, useDispatch} from 'react-redux';
 import {SwitchColor} from '../../redux/action/changeColor';
 import {setColorToStorage} from '../../service';
+import {removeCurrentUser} from '../../service/user.service';
+import {_handleLogout} from '../../redux/action/auth.action';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = props => {
@@ -59,7 +61,9 @@ const CustomDrawerContent = props => {
             />
           )}
           label="Logout"
-          onPress={() => props.navigation.toggleDrawer()}
+          onPress={() => {
+            removeCurrentUser().then(() => dispatch(_handleLogout()));
+          }}
         />
         <View style={{width: '100%', paddingHorizontal: 10}}>
           <Pressable
@@ -114,7 +118,7 @@ function HomeScreen() {
             }
       }>
       <Drawer.Screen
-        name="Tops"
+        name="New"
         component={Tops}
         options={{
           drawerIcon: () => (
