@@ -4,38 +4,87 @@ import {
   StyleSheet,
   TextInput,
   StatusBar,
-  KeyboardAvoidingView,
   Image,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
+import instance from '../../service/axios';
+import {
+  setLocalAccessToken,
+  setLocalRefreshToken,
+} from '../../service/token.service';
+import {setUser} from '../../service/user.service';
+import {useDispatch} from 'react-redux';
+import {_handleLogin} from '../../redux/action/auth.action';
 const Login = ({navigation}) => {
+  const [Phone, setPhone] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const dispatch = useDispatch();
+
   const navigationRegister = () => {
     navigation.navigate('Register');
   };
   const handleLogin = () => {
-    // navigation.navigate('Home');
+    setIsLoading(true);
+    instance
+      .post('/api/user/login', {
+        phone: Phone,
+        password: password,
+      })
+      .then(async res => {
+        if (res.status === 200) {
+          console.log(res.data.data);
+          await setUser(res.data.data.id);
+          await setLocalAccessToken(res.data.data.accessToken);
+          await setLocalRefreshToken(res.data.data.refreshToken);
+          dispatch(_handleLogin());
+        }
+      })
+      .catch(error =>
+        Alert.alert('notification', 'Login fail', [
+          {text: 'OK', style: 'cancel'},
+        ]),
+      )
+      .finally(() => setIsLoading(false));
   };
   return (
     <View style={Style.container}>
       <StatusBar hidden={true} />
-      <Image
-        source={require('../../public/image/avata.png')}
-        style={Style.image}
-      />
-      <TextInput style={Style.textInput} placeholder="Email" />
-      <TextInput style={Style.textInput} placeholder="Password" />
-      <TouchableOpacity style={Style.button} onPress={handleLogin}>
-        <Text style={Style.fontLogin}>LOGIN</Text>
-      </TouchableOpacity>
-      <View style={Style.row}>
-        <Text>You don't have an account ?</Text>
-        <TouchableOpacity
-          style={{marginHorizontal: 10}}
-          onPress={navigationRegister}>
-          <Text style={{textDecorationLine: 'underline'}}>Register</Text>
-        </TouchableOpacity>
-      </View>
+      {isLoading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <>
+          <Image
+            source={require('../../public/image/avata.png')}
+            style={Style.image}
+          />
+          <TextInput
+            style={Style.textInput}
+            placeholder="Phone"
+            onChangeText={text => setPhone(text)}
+          />
+          <TextInput
+            style={Style.textInput}
+            placeholder="Password"
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
+          />
+          <TouchableOpacity style={Style.button} onPress={handleLogin}>
+            <Text style={Style.fontLogin}>LOGIN</Text>
+          </TouchableOpacity>
+          <View style={Style.row}>
+            <Text>You don't have an account ?</Text>
+            <TouchableOpacity
+              style={{marginHorizontal: 10}}
+              onPress={navigationRegister}>
+              <Text style={{textDecorationLine: 'underline'}}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };
