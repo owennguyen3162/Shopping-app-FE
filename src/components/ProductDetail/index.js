@@ -45,7 +45,7 @@ const ProductDetail = ({navigation, route}) => {
         <Text style={theme.color === 'white' ? Style.text1 : Style.text1Dark}>
           {name}
         </Text>
-        <Text style={theme.cart === 'white' ? Style.text2 : Style.text2Dark}>
+        <Text style={theme.color === 'white' ? Style.text2 : Style.text2Dark}>
           {description}
         </Text>
         <Text style={theme.color === 'white' ? Style.text3 : Style.text3Dark}>
@@ -56,33 +56,75 @@ const ProductDetail = ({navigation, route}) => {
             <Pressable onPress={() => setSize('S')}>
               {size === 'S' ? (
                 <View style={Style.sizeHighlight}>
-                  <Text style={Style.textSize}>S</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    S
+                  </Text>
                 </View>
               ) : (
                 <View style={Style.size}>
-                  <Text style={Style.textSize}>S</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    S
+                  </Text>
                 </View>
               )}
             </Pressable>
             <Pressable onPress={() => setSize('M')}>
               {size === 'M' ? (
                 <View style={Style.sizeHighlight}>
-                  <Text style={Style.textSize}>M</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    M
+                  </Text>
                 </View>
               ) : (
                 <View style={Style.size}>
-                  <Text style={Style.textSize}>M</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    M
+                  </Text>
                 </View>
               )}
             </Pressable>
             <Pressable onPress={() => setSize('L')}>
               {size === 'L' ? (
                 <View style={Style.sizeHighlight}>
-                  <Text style={Style.textSize}>L</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    L
+                  </Text>
                 </View>
               ) : (
                 <View style={Style.size}>
-                  <Text style={Style.textSize}>L</Text>
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.textSize
+                        : Style.textSizeBlack
+                    }>
+                    L
+                  </Text>
                 </View>
               )}
             </Pressable>
@@ -155,7 +197,7 @@ const Style = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
-  text2: {color: '#B0B0B0', marginBottom: 20},
+  text2: {color: 'black', marginBottom: 20},
   text2Dark: {color: 'white', marginBottom: 20},
   text3: {fontWeight: 'bold', fontSize: 20, color: 'black'},
   text3Dark: {fontWeight: 'bold', fontSize: 20, color: 'white'},
@@ -186,6 +228,9 @@ const Style = StyleSheet.create({
   },
   textSize: {
     color: 'white',
+  },
+  textSizeBlack: {
+    color: 'black',
   },
 
   cart: {
