@@ -7,122 +7,105 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import Item from '../../components/Item';
+import {useSelector} from 'react-redux';
+import instance from '../../service/axios';
 
 const VansVeniceDetail = ({navigation}) => {
-  const FakeData = [
-    {
-      id: 1,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 2,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 3,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 4,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 5,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 6,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-  ];
+  const theme = useSelector(state => state.SwitchColor);
+  const [data, setData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    instance
+      .get('/api/products/vans')
+      .then(data => {
+        data.status === 200
+          ? setData(data.data.data)
+          : Alert.alert('warning', 'Get Data Fail', [
+              {text: 'ok', style: 'cancel'},
+            ]);
+      })
+      .catch(error =>
+        Alert.alert('warning', 'server error', [{text: 'ok', style: 'cancel'}]),
+      )
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
-    <View style={Style.container}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <ImageBackground
-            source={{
-              uri: 'https://c1.wallpaperflare.com/preview/201/268/980/banie-skateboard-man-street.jpg',
-            }}
-            style={Style.image}
-            resizeMode="stretch"
-            blurRadius={4}>
-            <View style={Style.textInside}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Image
-                  source={{
-                    uri: 'https://cdn-icons-png.flaticon.com/512/151/151846.png',
-                  }}
-                  style={Style.backImage}
-                  resizeMode="center"
-                />
-              </TouchableOpacity>
+    <View
+      style={theme.color === 'white' ? Style.container : Style.containerDark}>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <ImageBackground
+              source={{
+                uri: 'https://c1.wallpaperflare.com/preview/201/268/980/banie-skateboard-man-street.jpg',
+              }}
+              style={Style.image}
+              resizeMode="stretch"
+              blurRadius={4}>
+              <View style={Style.textInside}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/512/151/151846.png',
+                    }}
+                    style={Style.backImage}
+                    resizeMode="center"
+                  />
+                </TouchableOpacity>
 
-              <View>
-                <Text style={[Style.text, Style.textMain]}>
-                  Vans Venice collection
-                </Text>
-                <Text style={Style.text}>
-                  Authentic and sturdy skate apparel with a uniquely L.A
-                  aesthetic. Bold, hardy and ready to skate.
-                </Text>
+                <View>
+                  <Text style={[Style.text, Style.textMain]}>
+                    Vans Venice collection
+                  </Text>
+                  <Text style={Style.text}>
+                    Authentic and sturdy skate apparel with a uniquely L.A
+                    aesthetic. Bold, hardy and ready to skate.
+                  </Text>
+                </View>
               </View>
-            </View>
-          </ImageBackground>
-        }
-        keyExtractor={item => item.id}
-        data={FakeData}
-        renderItem={({item}) => (
-          <Pressable onPress={() => navigation.navigate('ProductDetail')}>
-            <Item
-              image={item.image}
-              name={item.name}
-              description={item.description}
-              price={item.price}
-            />
-          </Pressable>
-        )}
-      />
+            </ImageBackground>
+          }
+          keyExtractor={item => item.id}
+          data={data}
+          renderItem={({item}) => (
+            <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+              <Item
+                image={item.image}
+                name={item.name}
+                description={item.description}
+                price={item.price}
+              />
+            </Pressable>
+          )}
+        />
+      )}
     </View>
   );
 };
 const Style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  containerDark: {
+    backgroundColor: '#111111',
     flex: 1,
     paddingHorizontal: 10,
   },
