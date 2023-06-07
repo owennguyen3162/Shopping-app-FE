@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ProductDetail from '../../components/ProductDetail';
+import ProductDetail from '../../components/Detail';
 import VansVeniceDetail from '../../Screen/Detail/VansVeniceDetail';
 import Home from '../../Screen/Home';
 import {ScreenOption} from '../../utils/ScreenOptions';

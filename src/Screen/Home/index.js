@@ -5,9 +5,11 @@ import CartScreen from '../bottomTab/CartScreen';
 import HomeIcon from 'react-native-vector-icons/Feather';
 import CartIcon from 'react-native-vector-icons/Feather';
 import ChatIcon from 'react-native-vector-icons/Feather';
+import OrderIcon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomStack = createBottomTabNavigator();
 import {useSelector} from 'react-redux';
+import OrderScreen from '../bottomTab/OrderScreen';
 function Home() {
   const theme = useSelector(state => state.SwitchColor);
   return (
@@ -59,6 +61,16 @@ function Home() {
         options={{
           tabBarIcon: ({color}) => (
             <CartIcon name="shopping-cart" size={22} color={color} />
+          ),
+          tabBarBadge: 3,
+        }}
+      />
+      <BottomStack.Screen
+        name="Order"
+        component={OrderScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <OrderIcon name="list-alt" size={22} color={color} />
           ),
           tabBarBadge: 3,
         }}
