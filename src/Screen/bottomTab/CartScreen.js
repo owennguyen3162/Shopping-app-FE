@@ -20,6 +20,8 @@ const CartScreen = ({navigation}) => {
   const [price, setPrice] = React.useState(0);
   const [address, setAddress] = React.useState('ba vi, Ha noi');
   const [isLoading, setIsLoading] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const [option, setOption] = React.useState(50);
   React.useEffect(() => {
     getData();
@@ -36,6 +38,7 @@ const CartScreen = ({navigation}) => {
       Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
     } finally {
       setIsLoading(false);
+      setRefreshing(false);
     }
   };
   const handle_Checkout = async () => {
@@ -77,7 +80,13 @@ const CartScreen = ({navigation}) => {
       setIsLoading(false);
     }
   };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // console.log(data);
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -102,6 +111,9 @@ const CartScreen = ({navigation}) => {
               initialNumToRender={10}
               keyExtractor={item => item.id}
               data={data}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
               renderItem={({item}) => (
                 <Pressable>
                   <ItemCart
