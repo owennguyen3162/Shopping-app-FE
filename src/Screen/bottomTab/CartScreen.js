@@ -14,7 +14,7 @@ import ItemCart from '../../components/ItemCart';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import {RadioButton} from 'react-native-paper';
-const CartScreen = ({navigation}) => {
+const CartScreen = () => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
   const [price, setPrice] = React.useState(0);
@@ -68,6 +68,18 @@ const CartScreen = ({navigation}) => {
   };
 
   const handleRemoveItem = async id => {
+    Alert.alert('Notification', 'Are you sure ?', [
+      {
+        text: 'OK',
+        onPress: () => {
+          removeItem(id);
+        },
+      },
+      {text: 'Cancel', style: 'cancel'},
+    ]);
+  };
+
+  const removeItem = async id => {
     setIsLoading(true);
     try {
       const res = await instance.delete(`/api/cart/removeToCart/${id}`);
