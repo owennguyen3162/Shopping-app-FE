@@ -74,13 +74,13 @@ const ItemOrder = props => {
 const Style = StyleSheet.create({
   containerParent: {
     width: '100%',
-    height: 135,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
     width: '96%',
-    height: 120,
+    height: 105,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'silver',
@@ -91,7 +91,7 @@ const Style = StyleSheet.create({
   },
   containerDark: {
     width: '96%',
-    height: 120,
+    height: 105,
     borderWidth: 1,
     borderRadius: 5,
     flexDirection: 'row',
@@ -122,14 +122,19 @@ const Style = StyleSheet.create({
     marginLeft: 15,
     justifyContent: 'center',
   },
-  TextName: {color: 'black', fontWeight: 'bold', marginBottom: 7},
-  TextNameDark: {color: 'white', fontWeight: 'bold', marginBottom: 7},
+  TextName: {color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13},
+  TextNameDark: {
+    color: 'white',
+    fontWeight: 'bold',
+    marginBottom: 3,
+    fontSize: 13,
+  },
   itemDelete: {
     width: 20,
     height: 20,
     position: 'absolute',
     marginLeft: 340,
-    bottom: 105,
+    bottom: 90,
   },
 });
 

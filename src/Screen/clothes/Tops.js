@@ -47,7 +47,9 @@ const Tops = ({navigation}) => {
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
       {isloading ? (
-        <ActivityIndicator size={'large'} />
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <ActivityIndicator size={'large'} />
+        </View>
       ) : (
         <>
           <View style={Style.header}>

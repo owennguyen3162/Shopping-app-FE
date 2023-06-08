@@ -1,15 +1,15 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../bottomTab/HomeScreen';
-import ChatScreen from '../bottomTab/ChatScreen';
 import CartScreen from '../bottomTab/CartScreen';
 import HomeIcon from 'react-native-vector-icons/Feather';
 import CartIcon from 'react-native-vector-icons/Feather';
-import ChatIcon from 'react-native-vector-icons/Feather';
+import NotificationIcon from 'react-native-vector-icons/Ionicons';
 import OrderIcon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomStack = createBottomTabNavigator();
 import {useSelector} from 'react-redux';
 import OrderScreen from '../bottomTab/OrderScreen';
+import Notification from '../bottomTab/NotificationScreen';
 function Home() {
   const theme = useSelector(state => state.SwitchColor);
   return (
@@ -20,6 +20,7 @@ function Home() {
               headerShown: false,
               tabBarActiveTintColor: 'darkorchid',
               tabBarInactiveTintColor: 'silver',
+              tabBarShowLabel: false,
               tabBarLabelStyle: {
                 fontSize: 10,
               },
@@ -28,6 +29,7 @@ function Home() {
               headerShown: false,
               tabBarActiveTintColor: 'darkorchid',
               tabBarInactiveTintColor: 'white',
+              tabBarShowLabel: false,
               tabBarLabelStyle: {
                 fontSize: 10,
               },
@@ -44,15 +46,6 @@ function Home() {
             <HomeIcon name="home" size={22} color={color} />
           ),
           tabBarLabel: 'Home',
-        }}
-      />
-      <BottomStack.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{
-          tabBarIcon: ({color}) => (
-            <ChatIcon name="message-circle" size={22} color={color} />
-          ),
         }}
       />
       <BottomStack.Screen
@@ -73,6 +66,19 @@ function Home() {
             <OrderIcon name="list-alt" size={22} color={color} />
           ),
           tabBarBadge: 3,
+        }}
+      />
+      <BottomStack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          tabBarIcon: ({color}) => (
+            <NotificationIcon
+              name="notifications-outline"
+              size={25}
+              color={color}
+            />
+          ),
         }}
       />
     </BottomStack.Navigator>

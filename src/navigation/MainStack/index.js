@@ -1,14 +1,14 @@
 import React from 'react';
-import {getColorToStorage} from '../../service';
 import AuthStack from '../Auth';
 import HomeStack from '../Home';
-import {SwitchColor} from '../../redux/action/changeColor';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserId} from '../../service/user.service';
 import {_handleLogin} from '../../redux/action/auth.action';
+import {NavigationContainer} from '@react-navigation/native';
+import SlapScreen from '../../Screen/splashScreen';
 const MainStack = () => {
   const isLoginess = useSelector(state => state.Auth);
-
+  const [checkSession, setCheckSession] = React.useState(true);
   const dispatch = useDispatch();
   React.useEffect(() => {
     getData();
@@ -16,20 +16,26 @@ const MainStack = () => {
   }, []);
 
   const getData = async () => {
-    await getTheme();
-    await getUserId().then(res => {
-      if (res) {
-        dispatch(_handleLogin());
-      }
-    });
+    await getUserId()
+      .then(res => {
+        if (res) {
+          dispatch(_handleLogin());
+        }
+      })
+      .finally(() => setCheckSession(false));
   };
 
-  const getTheme = async () => {
-    const value = await getColorToStorage();
-    return dispatch(SwitchColor(value));
-  };
-
-  return !isLoginess.isLoginess ? <AuthStack /> : <HomeStack />;
+  return (
+    <NavigationContainer>
+      {checkSession ? (
+        <SlapScreen />
+      ) : !isLoginess.isLoginess ? (
+        <AuthStack />
+      ) : (
+        <HomeStack />
+      )}
+    </NavigationContainer>
+  );
 };
 
 export default MainStack;
