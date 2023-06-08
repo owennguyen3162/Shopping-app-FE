@@ -2,7 +2,7 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
 const Item = props => {
-  const {name, price, description, image} = props;
+  const {name, price, description, image, sizee} = props;
   const theme = useSelector(state => state.SwitchColor);
   return (
     <View
@@ -20,12 +20,24 @@ const Item = props => {
           numberOfLines={3}>
           {description}
         </Text>
-        <Text
-          style={
-            theme.color === 'white' ? Style.textPrice : Style.textPriceDark
-          }>
-          $ {price}
-        </Text>
+        <View style={Style.footer}>
+          <Text
+            style={
+              theme.color === 'white' ? Style.textPrice : Style.textPriceDark
+            }>
+            $ {price}
+          </Text>
+          {sizee ? (
+            <Text
+              style={
+                theme.color === 'white' ? Style.textPrice : Style.textPriceDark
+              }>
+              Size {sizee}
+            </Text>
+          ) : (
+            <></>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -77,6 +89,7 @@ const Style = StyleSheet.create({
     height: '80%',
     justifyContent: 'space-between',
     marginLeft: 15,
+    width: '100%',
   },
   TextName: {color: 'black', fontWeight: 'bold'},
   TextNameDark: {color: 'white', fontWeight: 'bold'},
@@ -88,6 +101,11 @@ const Style = StyleSheet.create({
   },
   textPrice: {color: 'black', fontWeight: 'bold'},
   textPriceDark: {color: 'white', fontWeight: 'bold'},
+  footer: {
+    flexDirection: 'row',
+    width: '55%',
+    justifyContent: 'space-between',
+  },
 });
 
 export default Item;

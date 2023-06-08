@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
-import Item from '../../components/Item';
+import Item from '../Item';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
 
