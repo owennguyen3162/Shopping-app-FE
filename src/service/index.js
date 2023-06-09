@@ -11,9 +11,10 @@ export const setColorToStorage = async color => {
 export const getColorToStorage = async () => {
   try {
     const data = await AsyncStorage.getItem('Color');
-    if (data) {
-      return data;
+    if (!data) {
+      return 'white';
     }
+    return data;
   } catch (error) {
     return 'white';
   }

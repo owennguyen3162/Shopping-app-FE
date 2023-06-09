@@ -23,8 +23,7 @@ export const getUserId = async () => {
 
 export const removeCurrentUser = async () => {
   try {
-    await AsyncStorage.multiRemove(['userId', 'refreshToken', 'accessToken']);
-    console.log('clear OK');
+    await AsyncStorage.clear();
   } catch (error) {
     console.log('get User id failed' + error);
   }

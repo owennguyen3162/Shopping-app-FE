@@ -11,8 +11,7 @@ const SlapScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getTheme = async () => {
-    const value = await getColorToStorage();
-    return dispatch(SwitchColor(value));
+    getColorToStorage().then(res => dispatch(SwitchColor(res)));
   };
 
   return (

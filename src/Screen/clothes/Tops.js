@@ -15,6 +15,12 @@ import React from 'react';
 import ItemHorizontal from '../../components/ItemHorizontal';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
+import {
+  createChannel,
+  navigateWithNotification,
+  showNotification,
+} from '../../service/notification';
+import messaging from '@react-native-firebase/messaging';
 const Tops = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
 
@@ -24,6 +30,14 @@ const Tops = ({navigation}) => {
   const [isloading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     fetchData();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const channel_ID = Math.random().toString(36).substring(7);
+      createChannel(channel_ID);
+      showNotification(channel_ID, remoteMessage);
+      navigateWithNotification(navigation, remoteMessage);
+    });
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchData = async () => {
