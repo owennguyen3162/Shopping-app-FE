@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import instance from '../../service/axios';
+import messaging from '@react-native-firebase/messaging';
 const Register = ({navigation}) => {
   const navigationLogin = () => {
     navigation.goBack();
@@ -33,10 +34,13 @@ const Register = ({navigation}) => {
     }
 
     try {
+      await messaging().registerDeviceForRemoteMessages();
+      const token = await messaging().getToken();
       const res = await instance.post('/api/user/createAccount', {
         phone,
         name,
         password,
+        token,
       });
       if (res.status === 201) {
         Alert.alert('Notification', 'Register successfully', [
