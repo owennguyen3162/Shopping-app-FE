@@ -8,7 +8,7 @@ const OrdersDetail = ({route, navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const converTime = data => {
     let date = new Date(data);
-    return `${date.getFullYear()}:${date.getMonth()}:${date.getDay()}`;
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
   };
   return (
     <View
