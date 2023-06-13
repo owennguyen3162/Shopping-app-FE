@@ -1,13 +1,12 @@
-import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localeEn from 'dayjs/locale/en'; // With a custom alias for the locale object
 const ItemOrder = props => {
-  const {id, size, date, price} = props;
+  const { id, size, date, price, status } = props;
   const theme = useSelector(state => state.SwitchColor);
-
   const handle_date = date => {
     dayjs.extend(relativeTime).locale(localeEn);
     let fromNowOn = dayjs(date).fromNow();
@@ -19,7 +18,7 @@ const ItemOrder = props => {
       <View
         style={theme.color === 'white' ? Style.container : Style.containerDark}>
         <Pressable onPress={() => props.getIdItem(id)}>
-          <View style={{height: '100%'}}>
+          <View style={{ height: '100%' }}>
             <Image
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/189/189690.png',
@@ -29,23 +28,54 @@ const ItemOrder = props => {
           </View>
         </Pressable>
 
-        <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/889/889843.png',
-          }}
-          style={Style.image}
-        />
+        {
+          status === "waiting" ? <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/512/889/889843.png',
+            }}
+            style={Style.image}
+          /> : status === "confirmed" ?
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/7245/7245083.png',
+              }}
+              style={Style.image}
+            /> :
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/10828/10828604.png',
+              }}
+              style={Style.image}
+            />
+        }
         <View
           style={theme.color === 'white' ? Style.line : Style.lineDark}></View>
         <View style={Style.body}>
-          <View style={{height: '88%'}}>
-            <Text
-              style={[
-                theme.color === 'white' ? Style.TextName : Style.TextNameDark,
-                {fontSize: 16},
-              ]}>
-              wait for confirmation
-            </Text>
+          <View style={{ height: '88%' }}>
+            {
+              status === "waiting" ? <Text
+                style={[
+                  theme.color === 'white' ? Style.TextName : Style.TextNameDark,
+                  { fontSize: 16, color: "red" },
+                ]}>
+                wait for confirmation
+              </Text> :
+                status === "confirmed" ? <Text
+                  style={[
+                    theme.color === 'white' ? Style.TextName : Style.TextNameDark,
+                    { fontSize: 16, color: 'yellow' },
+                  ]}>
+                  shipping
+                </Text>
+                  :
+                  <Text
+                    style={[
+                      theme.color === 'white' ? Style.TextName : Style.TextNameDark,
+                      { fontSize: 16, color: 'green' },
+                    ]}>
+                    successful delivery
+                  </Text>
+            }
             <Text
               style={
                 theme.color === 'white' ? Style.TextName : Style.TextNameDark
@@ -122,7 +152,7 @@ const Style = StyleSheet.create({
     marginLeft: 15,
     justifyContent: 'center',
   },
-  TextName: {color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13},
+  TextName: { color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13 },
   TextNameDark: {
     color: 'white',
     fontWeight: 'bold',
