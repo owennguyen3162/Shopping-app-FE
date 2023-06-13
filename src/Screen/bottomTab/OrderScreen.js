@@ -109,6 +109,7 @@ const OrderScreen = ({navigation}) => {
                     price={item.totalPrice}
                     getIdItem={remvoteItem}
                     id={item.id}
+                    status={item.status}
                   />
                 </Pressable>
               )}
