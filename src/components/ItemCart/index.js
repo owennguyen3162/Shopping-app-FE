@@ -41,18 +41,18 @@ const Item = props => {
               $ {price}
             </Text>
           </View>
+
+        </View>
+        <View style={{ flex: 1 }}>
           <Pressable onPress={() => props.getIdItem(id)}>
-            <View style={{ position: "absolute", width: "53%" }}>
-              <Image
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/128/189/189690.png',
-                }}
-                style={Style.itemDelete}
-              />
-            </View>
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
+              }}
+              style={theme.color === "white" ? Style.itemDelete : Style.itemDeleteDark}
+            />
           </Pressable>
         </View>
-
       </View>
     </View>
   );
@@ -66,7 +66,7 @@ const Style = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '96%',
+    width: '100%',
     height: 120,
     borderWidth: 1,
     borderRadius: 5,
@@ -77,7 +77,7 @@ const Style = StyleSheet.create({
     backgroundColor: 'white',
   },
   containerDark: {
-    width: '96%',
+    width: '100%',
     height: 120,
     borderWidth: 1,
     borderRadius: 5,
@@ -108,24 +108,29 @@ const Style = StyleSheet.create({
     height: '80%',
     justifyContent: 'space-between',
     marginLeft: 15,
+    flex: 5.2
   },
   TextName: { color: 'black', fontWeight: 'bold' },
   TextNameDark: { color: 'white', fontWeight: 'bold' },
   textDesc: {
-    width: "25%",
+    width: "95%",
     fontSize: 12.5,
     color: 'black',
   },
-  textDescDark: { width: "25%", fontSize: 12.5, color: 'white', },
+  textDescDark: { width: "95%", fontSize: 12.5, color: 'white', },
   textPrice: { color: 'black', fontWeight: 'bold', },
   textPriceDark: { color: 'white', fontWeight: 'bold' },
-  itemDelete: {
-    width: 20,
-    height: 20,
-    bottom: 110,
-    marginLeft: "51%",
+  footer: { flexDirection: 'row', justifyContent: 'space-between', width: "100%" },
+  itemDeleteDark: {
+    width: 25,
+    height: 25,
+    tintColor: "white",
   },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', width: "25%" },
+  itemDelete: {
+    width: 25,
+    height: 25,
+    tintColor: "black"
+  },
 });
 
 export default Item;
