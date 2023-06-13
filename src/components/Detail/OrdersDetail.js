@@ -46,7 +46,7 @@ const OrdersDetail = ({route, navigation}) => {
         </Text>
       </View>
       <View
-        style={{borderWidth: 1, width: '100%', borderColor: 'silver'}}></View>
+        style={{borderWidth: 1, width: '100%', borderColor: 'silver', marginTop:35}}></View>
       <View style={{flex: 3, marginTop: 5}}>
         <FlatList
           data={data}
