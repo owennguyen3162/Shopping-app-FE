@@ -17,17 +17,6 @@ const ItemOrder = props => {
     <View style={Style.containerParent}>
       <View
         style={theme.color === 'white' ? Style.container : Style.containerDark}>
-        <Pressable onPress={() => props.getIdItem(id)}>
-          <View style={{ height: '100%' }}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/189/189690.png',
-              }}
-              style={Style.itemDelete}
-            />
-          </View>
-        </Pressable>
-
         {
           status === "waiting" ? <Image
             source={{
@@ -96,6 +85,14 @@ const ItemOrder = props => {
             </Text>
           </View>
         </View>
+        <View style={{flex: 1}}>
+        <Image
+          source={{
+            uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
+          }}
+          style={theme.color === "white" ? Style.itemDelete: Style.itemDeleteDark}
+        />
+        </View>
       </View>
     </View>
   );
@@ -109,7 +106,7 @@ const Style = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '96%',
+    width: '100%',
     height: 105,
     borderWidth: 1,
     borderRadius: 5,
@@ -120,7 +117,7 @@ const Style = StyleSheet.create({
     backgroundColor: 'white',
   },
   containerDark: {
-    width: '96%',
+    width: '100%',
     height: 105,
     borderWidth: 1,
     borderRadius: 5,
@@ -151,6 +148,7 @@ const Style = StyleSheet.create({
     height: '100%',
     marginLeft: 15,
     justifyContent: 'center',
+    flex: 5.2
   },
   TextName: { color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13 },
   TextNameDark: {
@@ -159,12 +157,15 @@ const Style = StyleSheet.create({
     marginBottom: 3,
     fontSize: 13,
   },
+  itemDeleteDark: {
+    width: 25,
+    height: 25,
+    tintColor:"white"
+  },
   itemDelete: {
-    width: 20,
-    height: 20,
-    position: 'absolute',
-    marginLeft: 340,
-    bottom: 90,
+    width: 25,
+    height: 25,
+    tintColor:"black"
   },
 });
 
