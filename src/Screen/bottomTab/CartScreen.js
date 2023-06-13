@@ -141,7 +141,7 @@ const CartScreen = () => {
               )}
             />
           </View>
-          <View style={{flex: 4}}>
+          <View style={{flex: 5}}>
             <Text
               style={
                 theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark

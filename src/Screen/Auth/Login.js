@@ -15,10 +15,11 @@ import {
   setLocalAccessToken,
   setLocalRefreshToken,
 } from '../../service/token.service';
-import {setUser} from '../../service/user.service';
-import {useDispatch} from 'react-redux';
-import {_handleLogin} from '../../redux/action/auth.action';
-const Login = ({navigation}) => {
+import { setUser } from '../../service/user.service';
+import { useDispatch } from 'react-redux';
+import { _handleLogin } from '../../redux/action/auth.action';
+import messaging from "@react-native-firebase/messaging";
+const Login = ({ navigation }) => {
   const [Phone, setPhone] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -27,16 +28,18 @@ const Login = ({navigation}) => {
   const navigationRegister = () => {
     navigation.navigate('Register');
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsLoading(true);
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
     instance
       .post('/api/user/login', {
         phone: Phone,
         password: password,
+        fcmToken: token
       })
       .then(async res => {
         if (res.status === 200) {
-          console.log(res.data.data);
           await setUser(res.data.data.id);
           await setLocalAccessToken(res.data.data.accessToken);
           await setLocalRefreshToken(res.data.data.refreshToken);
@@ -45,7 +48,7 @@ const Login = ({navigation}) => {
       })
       .catch(error =>
         Alert.alert('notification', 'Login fail', [
-          {text: 'OK', style: 'cancel'},
+          { text: 'OK', style: 'cancel' },
         ]),
       )
       .finally(() => setIsLoading(false));
@@ -78,9 +81,9 @@ const Login = ({navigation}) => {
           <View style={Style.row}>
             <Text>You don't have an account ?</Text>
             <TouchableOpacity
-              style={{marginHorizontal: 10}}
+              style={{ marginHorizontal: 10 }}
               onPress={navigationRegister}>
-              <Text style={{textDecorationLine: 'underline'}}>Register</Text>
+              <Text style={{ textDecorationLine: 'underline' }}>Register</Text>
             </TouchableOpacity>
           </View>
         </>
