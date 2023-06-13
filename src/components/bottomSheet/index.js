@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View, Text } from "react-native"
 import Modal from "react-native-modal";
 
@@ -6,10 +6,9 @@ export default BottomSheet = (props) => {
     const { value } = props
     const [isModalVisible, setModalVisible] = React.useState(false);
 
-    useEffect(() => {
+    React.useEffect(() => {
         toggleModal()
     }, [value])
-
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
