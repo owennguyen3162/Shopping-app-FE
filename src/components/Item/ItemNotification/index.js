@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localeEn from 'dayjs/locale/en'; // With a custom alias for the locale object
 const ItemNotification = props => {
-  const {id, description, date} = props;
+  const {id, description, date,remvoteItem} = props;
   const theme = useSelector(state => state.SwitchColor);
 
   const handle_date = date => {
@@ -50,12 +50,18 @@ const ItemNotification = props => {
           </View>
         </View>
         <View style={{flex: 1}}>
-        <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
-          }}
-          style={theme.color === "white" ? Style.itemDelete: Style.itemDeleteDark}
-        />
+          <Pressable onPress={() => remvoteItem(id)}>
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
+              }}
+              style={
+                theme.color === 'white'
+                  ? Style.itemDelete
+                  : Style.itemDeleteDark
+              }
+            />
+          </Pressable>
         </View>
       </View>
     </View>
@@ -112,7 +118,7 @@ const Style = StyleSheet.create({
     height: '100%',
     marginLeft: 15,
     justifyContent: 'center',
-    flex: 6
+    flex: 6,
   },
   TextName: {color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13},
   TextNameDark: {
@@ -124,12 +130,12 @@ const Style = StyleSheet.create({
   itemDeleteDark: {
     width: 25,
     height: 25,
-    tintColor:"white"
+    tintColor: 'white',
   },
   itemDelete: {
     width: 25,
     height: 25,
-    tintColor:"black"
+    tintColor: 'black',
   },
 });
 
