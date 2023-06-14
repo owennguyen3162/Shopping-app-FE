@@ -12,6 +12,8 @@ import OrderScreen from '../bottomTab/OrderScreen';
 import Notification from '../bottomTab/NotificationScreen';
 function Home() {
   const theme = useSelector(state => state.SwitchColor);
+  const display = useSelector(state => state.tabbarStatus);
+
   return (
     <BottomStack.Navigator
       screenOptions={
@@ -24,6 +26,9 @@ function Home() {
               tabBarLabelStyle: {
                 fontSize: 10,
               },
+              tabBarStyle: {
+                display:display.display
+              },
             }
           : {
               headerShown: false,
@@ -35,7 +40,9 @@ function Home() {
               },
               tabBarStyle: {
                 backgroundColor: '#111111',
+                display:display.display
               },
+              
             }
       }>
       <BottomStack.Screen
