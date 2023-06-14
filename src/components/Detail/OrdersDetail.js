@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, Image, FlatList, Pressable} from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import Item from '../Item';
+import Item from '../Item/Item';
 
 const OrdersDetail = ({route, navigation}) => {
   const {data, totalPrice, code, address, time} = route.params;
