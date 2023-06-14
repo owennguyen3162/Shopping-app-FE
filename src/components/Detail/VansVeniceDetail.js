@@ -84,7 +84,13 @@ const VansVeniceDetail = ({navigation}) => {
           keyExtractor={item => item.id}
           data={data}
           renderItem={({item}) => (
-            <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+            <Pressable onPress={() => navigation.navigate('ProductDetail', {
+              id: item.id,
+              image: item.image,
+              name: item.name,
+              description: item.description,
+              price: item.price,
+            })}>
               <Item
                 image={item.image}
                 name={item.name}
