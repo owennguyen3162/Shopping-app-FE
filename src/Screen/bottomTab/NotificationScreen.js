@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
+import {View, Text, StyleSheet, FlatList, Alert} from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux'
+import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
-import { ActivityIndicator } from 'react-native-paper';
-import { getUserId } from '../../service/user.service';
+import {ActivityIndicator} from 'react-native-paper';
+import {getUserId} from '../../service/user.service';
 import ItemNotification from '../../components/Item/ItemNotification';
 const Notification = () => {
-  const theme = useSelector((theme) => theme.SwitchColor);
+  const theme = useSelector(theme => theme.SwitchColor);
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -16,12 +16,14 @@ const Notification = () => {
   }, []);
   const getData = async () => {
     try {
-      const res = await instance.get('/api/user/getNotification/' + (await getUserId()));
+      const res = await instance.get(
+        '/api/user/getNotification/' + (await getUserId()),
+      );
       if (res.status === 200) {
         setData(res.data);
       }
     } catch (error) {
-      Alert.alert('notification', 'error', [{ text: 'OK', style: 'cancel' }]);
+      Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
     } finally {
       setIsLoading(false);
       setRefreshing(false);
@@ -29,16 +31,30 @@ const Notification = () => {
   };
 
   return (
-    <View style={theme.color === "white" ? Style.container : Style.containerDark}>
-      <Text style={theme.color === "white" ? Style.title : Style.titleDark}>NOTIFICATION</Text>
-      {
-        isLoading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}><ActivityIndicator size={'large'} /></View> : <View>
-          <FlatList keyExtractor={(item) => item.id}
+    <View
+      style={theme.color === 'white' ? Style.container : Style.containerDark}>
+      <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
+        NOTIFICATION
+      </Text>
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} />
+        </View>
+      ) : (
+        <View style={{flex: 1}}>
+          <FlatList
+            keyExtractor={item => item.id}
             data={data}
-            renderItem={({ item }) => <ItemNotification id={item.id} description={item.description} date={item.date} />}
+            renderItem={({item}) => (
+              <ItemNotification
+                id={item.id}
+                description={item.description}
+                date={item.date}
+              />
+            )}
           />
         </View>
-      }
+      )}
     </View>
   );
 };
@@ -53,7 +69,8 @@ const Style = StyleSheet.create({
     flex: 1,
     backgroundColor: '#111111',
     paddingHorizontal: 15,
-  }, title: {
+  },
+  title: {
     color: 'black',
     fontSize: 20,
     fontWeight: 'bold',
