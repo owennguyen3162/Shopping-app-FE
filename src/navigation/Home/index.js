@@ -3,7 +3,6 @@ import ProductDetail from '../../components/Detail';
 import OrdersDetail from '../../components/Detail/OrdersDetail';
 import VansVeniceDetail from '../../components/Detail/VansVeniceDetail';
 import Home from '../../Screen/Home';
-import {ScreenOption} from '../../utils/ScreenOptions';
 const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
