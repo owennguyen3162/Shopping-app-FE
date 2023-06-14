@@ -123,7 +123,7 @@ const CartScreen = () => {
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
-        Your Cart
+        YOUR CART
       </Text>
       {isLoading ? (
         <View style={Style.centerScreen}>
@@ -272,7 +272,7 @@ const CartScreen = () => {
                         source={{
                           uri: 'https://cdn-icons-png.flaticon.com/512/3687/3687412.png',
                         }}
-                        style={{width: 35, height: 35}}
+                        style={{width: 30, height: 30}}
                       />
                       <Text style={Style.text}>Delete</Text>
                     </View>
@@ -289,7 +289,7 @@ const CartScreen = () => {
                         source={{
                           uri: 'https://cdn-icons-png.flaticon.com/512/463/463612.png',
                         }}
-                        style={{width: 35, height: 35}}
+                        style={{width: 30, height: 30}}
                       />
                       <Text style={Style.text}>Cancel</Text>
                     </View>
@@ -319,14 +319,14 @@ const Style = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
   },
   titleDark: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
@@ -411,8 +411,8 @@ const Style = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 18,
-    paddingVertical: 25,
+    fontSize: 16,
+    paddingVertical: 20,
     marginLeft: 20,
   },
   btnContainer: {
