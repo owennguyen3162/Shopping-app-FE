@@ -102,7 +102,7 @@ const Account = ({navigation}) => {
       <StatusBar hidden={true} />
       <View style={Style.header}>
         <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-          Account
+          ACCOUNT
         </Text>
         <Pressable onPress={() => navigation.toggleDrawer()}>
           <Image
