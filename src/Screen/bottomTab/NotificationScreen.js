@@ -1,4 +1,13 @@
-import {View, Text, StyleSheet, FlatList, Alert, RefreshControl, Pressable, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Alert,
+  RefreshControl,
+  Pressable,
+  Image,
+} from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
@@ -39,7 +48,7 @@ const Notification = () => {
   }, []);
 
   const remvoteItem = async id => {
-    setNotiId(id)
+    setNotiId(id);
     toggleModal();
   };
   const handleRemoveItem = () => {
@@ -50,7 +59,9 @@ const Notification = () => {
         onPress: async () => {
           setIsLoading(true);
           try {
-            const res = await instance.delete(`/api/user/deleteNotification/${notiId}`);
+            const res = await instance.delete(
+              `/api/user/deleteNotification/${notiId}`,
+            );
             if (res.status === 204) {
               getData();
             }
@@ -67,7 +78,6 @@ const Notification = () => {
     setModalVisible(!isModalVisible);
   };
 
-
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -83,6 +93,7 @@ const Notification = () => {
           <FlatList
             keyExtractor={item => item.id}
             data={data}
+            showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -95,7 +106,7 @@ const Notification = () => {
               />
             )}
           />
-           <Modal
+          <Modal
             onBackdropPress={() => setModalVisible(false)}
             onBackButtonPress={() => setModalVisible(false)}
             isVisible={isModalVisible}
