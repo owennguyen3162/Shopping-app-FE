@@ -73,7 +73,7 @@ const ProductDetail = ({navigation, route}) => {
           {description}
         </Text>
         <Text style={theme.color === 'white' ? Style.text3 : Style.text3Dark}>
-          R {price}
+          $ {price}
         </Text>
         <View style={Style.footer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>

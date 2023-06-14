@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import React from 'react';
-import Item from '../../components/Item';
+import Item from '../../components/Item/Item';
 import {useSelector} from 'react-redux';
 const Account = ({navigation}) => {
   const FakeData = [
@@ -102,7 +102,7 @@ const Account = ({navigation}) => {
       <StatusBar hidden={true} />
       <View style={Style.header}>
         <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-          Account
+          ACCOUNT
         </Text>
         <Pressable onPress={() => navigation.toggleDrawer()}>
           <Image

@@ -93,9 +93,9 @@ const Style = StyleSheet.create({
   },
   TextName: {color: 'black', fontWeight: 'bold'},
   TextNameDark: {color: 'white', fontWeight: 'bold'},
-  textDesc: {width: 220, fontSize: 12.5, color: 'black'},
+  textDesc: {width: "53%", fontSize: 12.5, color: 'black'},
   textDescDark: {
-    width: 220,
+    width: "53%",
     fontSize: 12.5,
     color: 'white',
   },

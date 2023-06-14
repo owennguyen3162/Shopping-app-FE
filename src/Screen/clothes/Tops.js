@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import React from 'react';
-import ItemHorizontal from '../../components/ItemHorizontal';
+import ItemHorizontal from '../../components/Item/ItemHorizontal';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {
@@ -165,12 +165,15 @@ const Tops = ({navigation}) => {
                   Vans Wayvee drop
                 </Text>
               </View>
-              <Image
-                source={{
-                  uri: 'https://ei7ew96pew2.exactdn.com/wp-content/uploads/2019/10/vans-the-nightmare-before-christmas-1190148.jpeg?strip=all&lossy=1&ssl=1',
-                }}
-                style={Style.imageLarge}
-              />
+              <Pressable
+                onPress={() => navigation.navigate('VansVeniceDetail')}>
+                <Image
+                  source={{
+                    uri: 'https://ei7ew96pew2.exactdn.com/wp-content/uploads/2019/10/vans-the-nightmare-before-christmas-1190148.jpeg?strip=all&lossy=1&ssl=1',
+                  }}
+                  style={Style.imageLarge}
+                />
+              </Pressable>
             </View>
           </ScrollView>
         </>

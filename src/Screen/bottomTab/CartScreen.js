@@ -7,13 +7,16 @@ import {
   RefreshControl,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import ItemCart from '../../components/ItemCart';
+import ItemCart from '../../components/Item/ItemCart';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import {RadioButton} from 'react-native-paper';
+import BottomSheet from '../../components/bottomSheet';
+import Modal from 'react-native-modal';
 const CartScreen = () => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
@@ -21,6 +24,9 @@ const CartScreen = () => {
   const [address, setAddress] = React.useState('ba vi, Ha noi');
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [value, setValue] = React.useState(false);
+  const [cartId, setCartId] = React.useState(null);
+  const [isModalVisible, setModalVisible] = React.useState(false);
 
   const [option, setOption] = React.useState(50);
   React.useEffect(() => {
@@ -68,29 +74,39 @@ const CartScreen = () => {
   };
 
   const handleRemoveItem = async id => {
-    Alert.alert('Notification', 'Are you sure ?', [
-      {
-        text: 'OK',
-        onPress: () => {
-          removeItem(id);
-        },
-      },
-      {text: 'Cancel', style: 'cancel'},
-    ]);
+    toggleModal();
+    setCartId(id);
   };
 
-  const removeItem = async id => {
-    setIsLoading(true);
-    try {
-      const res = await instance.delete(`/api/cart/removeToCart/${id}`);
-      if (res.status === 204) {
-        getData();
-      }
-    } catch (error) {
-      Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
-    } finally {
-      setIsLoading(false);
-    }
+  // console.log(isModalVisible);
+  const removeItem = async () => {
+    toggleModal()
+    Alert.alert('Notification', 'Are you sure', [
+      {
+        text: 'OK',
+        onPress: async () => {
+          setIsLoading(true);
+          try {
+            const res = await instance.delete(
+              `/api/cart/removeToCart/${cartId}`,
+            );
+            if (res.status === 204) {
+              getData();
+            }
+          } catch (error) {
+            Alert.alert('notification', 'error', [
+              {text: 'OK', style: 'cancel'},
+            ]);
+          } finally {
+            setIsLoading(false);
+          }
+        },
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -98,12 +114,16 @@ const CartScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   // console.log(data);
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
-        Your Cart
+        YOUR CART
       </Text>
       {isLoading ? (
         <View style={Style.centerScreen}>
@@ -223,6 +243,64 @@ const CartScreen = () => {
               </Text>
             </Pressable>
           </View>
+          <Modal
+            onBackdropPress={() => setModalVisible(false)}
+            onBackButtonPress={() => setModalVisible(false)}
+            isVisible={isModalVisible}
+            swipeDirection="down"
+            onSwipeComplete={toggleModal}
+            animationIn="bounceInUp"
+            animationOut="bounceOutDown"
+            animationInTiming={900}
+            animationOutTiming={500}
+            backdropTransitionInTiming={1000}
+            backdropTransitionOutTiming={500}
+            style={Style.modal}>
+            <View style={Style.modalContent}>
+              <View style={Style.center}>
+                <View style={Style.barIcon} />
+
+                <View style={{width: '100%'}}>
+                  <Pressable onPress={() => removeItem()}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/3687/3687412.png',
+                        }}
+                        style={{width: 30, height: 30}}
+                      />
+                      <Text style={Style.text}>Delete</Text>
+                    </View>
+                  </Pressable>
+                  <View style={Style.line}></View>
+                  <Pressable onPress={toggleModal}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/463/463612.png',
+                        }}
+                        style={{width: 30, height: 30}}
+                      />
+                      <Text style={Style.text}>Cancel</Text>
+                    </View>
+                  </Pressable>
+
+                  <View style={Style.line}></View>
+                </View>
+              </View>
+            </View>
+          </Modal>
+          {/* <BottomSheet value={value} removeItem={removeItem} /> */}
         </>
       )}
     </View>
@@ -241,14 +319,14 @@ const Style = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
   },
   titleDark: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
@@ -308,6 +386,44 @@ const Style = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: '#161616',
+    paddingTop: 12,
+    paddingHorizontal: 12,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    minHeight: 400,
+    paddingBottom: 20,
+  },
+  center: {
+    alignItems: 'center',
+  },
+  barIcon: {
+    width: 60,
+    height: 5,
+    backgroundColor: '#bbb',
+    borderRadius: 3,
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
+    paddingVertical: 20,
+    marginLeft: 20,
+  },
+  btnContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 500,
+  },
+  line: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'silver',
   },
 });
 export default CartScreen;
