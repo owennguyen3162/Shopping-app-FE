@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import React from 'react';
-import ItemHorizontal from '../../components/ItemHorizontal';
+import ItemHorizontal from '../../components/Item/ItemHorizontal';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {
