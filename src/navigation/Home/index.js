@@ -7,7 +7,13 @@ import {ScreenOption} from '../../utils/ScreenOptions';
 const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={ScreenOption}>
+    <Stack.Navigator
+      screenOptions={{
+        headerMode: 'float',
+        animation: 'fade',
+        headerShown: false,
+        presentation: 'transparentModal',
+      }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="VansVeniceDetail" component={VansVeniceDetail} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
