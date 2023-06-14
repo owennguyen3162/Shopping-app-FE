@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import instance from '../../service/axios';
 import { ActivityIndicator } from 'react-native-paper';
 import { getUserId } from '../../service/user.service';
-import ItemNotification from '../../components/ItemNotification';
+import ItemNotification from '../../components/Item/ItemNotification';
 const Notification = () => {
   const theme = useSelector((theme) => theme.SwitchColor);
   const [data, setData] = React.useState([]);
