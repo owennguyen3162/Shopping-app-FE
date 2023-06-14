@@ -7,17 +7,22 @@ import {
   RefreshControl,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import ItemOrder from '../../components/Item/ItemOrder';
+import Modal from 'react-native-modal';
 const OrderScreen = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isModalVisible, setModalVisible] = React.useState(false);
+  const [orderId, setOrderId] = React.useState(null);
+
 
   React.useEffect(() => {
     getData();
@@ -43,27 +48,33 @@ const OrderScreen = ({navigation}) => {
   }, []);
 
   const remvoteItem = async id => {
+    setOrderId(id)
+    toggleModal();
+  };
+  const handleRemoveItem = () => {
+    toggleModal();
     Alert.alert('Notification', 'Are you sure ?', [
       {
         text: 'Yes',
-        onPress: () => {
-          handleRemoveItem(id);
+        onPress: async () => {
+          setIsLoading(true);
+          try {
+            const res = await instance.delete(`/api/order/removeOrder/${orderId}`);
+            if (res.status === 204) {
+              getData();
+            }
+          } catch (error) {
+            console.log(error);
+          }
         },
       },
       {text: 'No', style: 'cancel'},
     ]);
   };
-  const handleRemoveItem = async id => {
-    setIsLoading(true);
-    try {
-      const res = await instance.delete(`/api/order/removeOrder/${id}`);
-      if (res.status === 204) {
-        getData();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
+
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -100,6 +111,7 @@ const OrderScreen = ({navigation}) => {
                       totalPrice: item.totalPrice,
                       address: item.address,
                       time: item.date,
+                      status: item.status
                     })
                   }>
                   <ItemOrder
@@ -116,6 +128,63 @@ const OrderScreen = ({navigation}) => {
               )}
             />
           </View>
+          <Modal
+            onBackdropPress={() => setModalVisible(false)}
+            onBackButtonPress={() => setModalVisible(false)}
+            isVisible={isModalVisible}
+            swipeDirection="down"
+            onSwipeComplete={toggleModal}
+            animationIn="bounceInUp"
+            animationOut="bounceOutDown"
+            animationInTiming={900}
+            animationOutTiming={500}
+            backdropTransitionInTiming={1000}
+            backdropTransitionOutTiming={500}
+            style={Style.modal}>
+            <View style={Style.modalContent}>
+              <View style={Style.center}>
+                <View style={Style.barIcon} />
+
+                <View style={{width: '100%'}}>
+                  <Pressable onPress={() => handleRemoveItem()}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/3687/3687412.png',
+                        }}
+                        style={{width: 35, height: 35}}
+                      />
+                      <Text style={Style.text}>Delete</Text>
+                    </View>
+                  </Pressable>
+                  <View style={Style.line}></View>
+                  <Pressable onPress={toggleModal}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/463/463612.png',
+                        }}
+                        style={{width: 35, height: 35}}
+                      />
+                      <Text style={Style.text}>Cancel</Text>
+                    </View>
+                  </Pressable>
+
+                  <View style={Style.line}></View>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </>
       )}
     </View>
@@ -145,6 +214,38 @@ const Style = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: '#161616',
+    paddingTop: 12,
+    paddingHorizontal: 12,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    minHeight: 400,
+    paddingBottom: 20,
+  },
+  center: {
+    alignItems: 'center',
+  },
+  barIcon: {
+    width: 60,
+    height: 5,
+    backgroundColor: '#bbb',
+    borderRadius: 3,
+  },
+  text: {
+    color: 'white',
+    fontSize: 18,
+    paddingVertical: 25,
+    marginLeft: 20,
+  },
+  line: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'silver',
   },
 });
 export default OrderScreen;
