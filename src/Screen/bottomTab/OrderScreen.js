@@ -12,7 +12,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
-import ItemOrder from '../../components/ItemOrder';
+import ItemOrder from '../../components/Item/ItemOrder';
 const OrderScreen = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
@@ -110,6 +110,7 @@ const OrderScreen = ({navigation}) => {
                     getIdItem={remvoteItem}
                     id={item.id}
                     status={item.status}
+                    remvoteItem={remvoteItem}
                   />
                 </Pressable>
               )}
