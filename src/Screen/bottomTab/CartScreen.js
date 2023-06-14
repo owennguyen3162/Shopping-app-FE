@@ -25,7 +25,7 @@ const CartScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [value, setValue] = React.useState(false);
-  const [userId, setUserId] = React.useState(null);
+  const [cartId, setCartId] = React.useState(null);
   const [isModalVisible, setModalVisible] = React.useState(false);
 
   const [option, setOption] = React.useState(50);
@@ -75,7 +75,7 @@ const CartScreen = () => {
 
   const handleRemoveItem = async id => {
     toggleModal();
-    setUserId(id);
+    setCartId(id);
   };
 
   // console.log(isModalVisible);
@@ -88,7 +88,7 @@ const CartScreen = () => {
           setIsLoading(true);
           try {
             const res = await instance.delete(
-              `/api/cart/removeToCart/${userId}`,
+              `/api/cart/removeToCart/${cartId}`,
             );
             if (res.status === 204) {
               getData();
