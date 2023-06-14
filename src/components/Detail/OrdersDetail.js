@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import Item from '../Item/Item';
 
 const OrdersDetail = ({route, navigation}) => {
-  const {data, totalPrice, code, address, time} = route.params;
+  const {data, totalPrice, code, address, time, status} = route.params;
   const theme = useSelector(state => state.SwitchColor);
   const converTime = data => {
     let date = new Date(data);
@@ -38,7 +38,7 @@ const OrdersDetail = ({route, navigation}) => {
           Shipping address: {address}
         </Text>
         <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-          Status: wait for confirmation
+          Status: {status}
         </Text>
         <Text
           style={theme.color === 'white' ? Style.textTime : Style.textTimeDark}>
