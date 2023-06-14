@@ -79,7 +79,7 @@ const OrderScreen = ({navigation}) => {
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
-        Your Orders
+        YOUR ORDERS
       </Text>
       {isLoading ? (
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
@@ -88,7 +88,7 @@ const OrderScreen = ({navigation}) => {
       ) : data.length === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
-            Orders EMPTY
+            ORDERS EMPTY
           </Text>
         </View>
       ) : (
@@ -157,7 +157,7 @@ const OrderScreen = ({navigation}) => {
                         source={{
                           uri: 'https://cdn-icons-png.flaticon.com/512/3687/3687412.png',
                         }}
-                        style={{width: 35, height: 35}}
+                        style={{width: 30, height: 30}}
                       />
                       <Text style={Style.text}>Delete</Text>
                     </View>
@@ -174,7 +174,7 @@ const OrderScreen = ({navigation}) => {
                         source={{
                           uri: 'https://cdn-icons-png.flaticon.com/512/463/463612.png',
                         }}
-                        style={{width: 35, height: 35}}
+                        style={{width: 30, height: 30}}
                       />
                       <Text style={Style.text}>Cancel</Text>
                     </View>
@@ -203,14 +203,14 @@ const Style = StyleSheet.create({
   },
   title: {
     color: 'black',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
   },
   titleDark: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
     marginBottom: 13,
@@ -239,8 +239,8 @@ const Style = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 18,
-    paddingVertical: 25,
+    fontSize: 16,
+    paddingVertical: 20,
     marginLeft: 20,
   },
   line: {
