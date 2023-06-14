@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Image, StyleSheet, Pressable} from 'react-native';
+import {View, Image, StyleSheet, Pressable, Alert} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -62,7 +62,14 @@ const CustomDrawerContent = props => {
           )}
           label="Logout"
           onPress={() => {
-            removeCurrentUser().then(() => dispatch(_handleLogout()));
+            Alert.alert('Notification', 'Do you want logout ?', [
+              {
+                text: 'Yes',
+                onPress: () =>
+                  removeCurrentUser().then(() => dispatch(_handleLogout())),
+              },
+              {text: 'No', style: 'cancel'},
+            ]);
           }}
         />
         <View style={{width: '100%', paddingHorizontal: 10}}>
