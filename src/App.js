@@ -4,7 +4,6 @@ import MainStack from './navigation/MainStack';
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import {PermissionsAndroid} from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 import {requestUserPermission} from './service/notification';
 const App = () => {
   React.useEffect(() => {

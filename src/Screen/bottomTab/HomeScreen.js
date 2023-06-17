@@ -22,12 +22,22 @@ import {setColorToStorage} from '../../service';
 import {removeCurrentUser} from '../../service/user.service';
 import {_handleLogout} from '../../redux/action/auth.action';
 const Drawer = createDrawerNavigator();
-
+import {useDrawerStatus} from '@react-navigation/drawer';
+import { hideTabbar, showTabbar } from '../../redux/action/TabbarStatus.action.';
 const CustomDrawerContent = props => {
   const theme = useSelector(state => state.SwitchColor);
-
+  const isDrawerOpen = useDrawerStatus();
   const progress = useDrawerProgress();
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if(isDrawerOpen === "open"){
+      dispatch(hideTabbar())
+    }else{
+      dispatch(showTabbar())
+    }
+  }, [isDrawerOpen]);
+ 
   // If you are on react-native-reanimated 1.x, use Animated.interpolate instead of Animated.interpolateNode
   const translateX = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
@@ -101,6 +111,7 @@ const CustomDrawerContent = props => {
 
 function HomeScreen() {
   const theme = useSelector(state => state.SwitchColor);
+
   return (
     <Drawer.Navigator
       useLegacyImplementation

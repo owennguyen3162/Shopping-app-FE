@@ -1,11 +1,13 @@
 import {combineReducers} from 'redux';
 
-import switchColor from './switchColor';
+import SwitchColor from './switchColor';
 import Auth from './auth';
+import tabbarStatus from './tabbarStatus';
 
 const Reducer = combineReducers({
-  SwitchColor: switchColor,
+  SwitchColor: SwitchColor,
   Auth: Auth,
+  tabbarStatus: tabbarStatus,
 });
 
 export default (state, action) => Reducer(state, action);
