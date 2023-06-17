@@ -27,7 +27,7 @@ function Home() {
                 fontSize: 10,
               },
               tabBarStyle: {
-                display:display.display
+                display: display.display,
               },
             }
           : {
@@ -40,9 +40,8 @@ function Home() {
               },
               tabBarStyle: {
                 backgroundColor: '#111111',
-                display:display.display
+                display: display.display,
               },
-              
             }
       }>
       <BottomStack.Screen
