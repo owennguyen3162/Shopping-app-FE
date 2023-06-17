@@ -1,100 +1,35 @@
 import {
   View,
   Text,
-  Button,
   StatusBar,
   StyleSheet,
   Image,
   Pressable,
-  FlatList,
-  RefreshControl,
+  Alert,
 } from 'react-native';
 import React from 'react';
-import Item from '../../components/Item/Item';
 import {useSelector} from 'react-redux';
+import instance from '../../service/axios';
+import {getUserId} from '../../service/user.service';
+import {ActivityIndicator} from 'react-native-paper';
 const Account = ({navigation}) => {
-  const FakeData = [
-    {
-      id: 1,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 2,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 3,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 4,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 5,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 6,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 7,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-    {
-      id: 8,
-      image:
-        'https://cdn.shopify.com/s/files/1/0613/7695/4559/products/pixelcut-export-1679479942753_7a99f9d2-bb3a-4848-bdb1-0b6520ba1a0d_1800x1800.png?v=1681602819',
-      price: 123,
-      name: 'Milford beanie',
-      description:
-        'The Milford Beanie is a 100% acrylic slouch beanie with an old school Vans OTW clip label.',
-    },
-  ];
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [data, setData] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+  React.useEffect(() => {
+    fetchAPI();
   }, []);
+
+  const fetchAPI = async () => {
+    try {
+      const json = await instance.get(`/api/user/${await getUserId()}`);
+      setData(json.data.data);
+    } catch (error) {
+      Alert.alert('warning', 'server error', [{text: 'ok', style: 'cancel'}]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const theme = useSelector(state => state.SwitchColor);
   return (
     <View
@@ -113,6 +48,73 @@ const Account = ({navigation}) => {
           />
         </Pressable>
       </View>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <View style={Style.showInfor}>
+            <Image
+              source={{uri: data.image}}
+              resizeMode="stretch"
+              style={Style.avatar}
+            />
+            <View style={Style.contentParent}>
+              <View>
+                <Text
+                  style={
+                    theme.color === 'white'
+                      ? Style.textName
+                      : Style.textNameDark
+                  }>
+                  {data.name}
+                </Text>
+                <Text
+                  style={
+                    theme.color === 'white'
+                      ? Style.textPhone
+                      : Style.textPhoneDark
+                  }>
+                  {data.phone}
+                </Text>
+              </View>
+              <Pressable onPress={() => navigation.navigate('EditProfile')}>
+                <Text style={Style.buttonEditProfile}>EDIT PROFILE</Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={{flex: 3, width: '100%'}}>
+            <Pressable onPress={() => navigation.navigate('OrderHistory')}>
+              <View style={Style.content}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/2140/2140695.png',
+                    }}
+                    style={
+                      theme.color === 'white' ? Style.icon : Style.iconDark
+                    }
+                  />
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.orderText
+                        : Style.orderTextDark
+                    }>
+                    Order History
+                  </Text>
+                </View>
+                <Image
+                  source={{
+                    uri: 'https://cdn-icons-png.flaticon.com/128/2722/2722985.png',
+                  }}
+                  style={theme.color === 'white' ? Style.icon : Style.iconDark}
+                />
+              </View>
+            </Pressable>
+            <View style={Style.line}></View>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -158,6 +160,58 @@ const Style = StyleSheet.create({
     height: 25,
     resizeMode: 'center',
     tintColor: 'white',
+  },
+  showInfor: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {width: 120, height: 120, borderRadius: 100},
+  textName: {fontSize: 18, fontWeight: 'bold', color: 'black'},
+  textNameDark: {fontSize: 18, fontWeight: 'bold', color: 'white'},
+  textPhone: {fontSize: 18, color: 'black'},
+  textPhoneDark: {fontSize: 18, color: 'white'},
+  line: {
+    width: '100%',
+    borderTopWidth: 1,
+    borderTopColor: 'silver',
+    marginTop: 20,
+  },
+  orderText: {
+    marginLeft: 15,
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 18,
+  },
+  orderTextDark: {
+    marginLeft: 15,
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 18,
+  },
+  icon: {width: 35, height: 35},
+  iconDark: {width: 35, height: 35, tintColor: 'white'},
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    justifyContent: 'space-between',
+  },
+  buttonEditProfile: {
+    textAlign: 'center',
+    width: 150,
+    height: 40,
+    lineHeight: 38,
+    backgroundColor: 'darkorchid',
+    borderRadius: 3,
+    fontWeight: '400',
+    color: 'white',
+  },
+  contentParent: {
+    marginLeft: 30,
+    height: '65%',
+    justifyContent: 'space-between',
   },
 });
 export default Account;
