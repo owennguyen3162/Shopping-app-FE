@@ -3,6 +3,8 @@ import ProductDetail from '../../components/Detail';
 import OrdersDetail from '../../components/Detail/OrdersDetail';
 import VansVeniceDetail from '../../components/Detail/VansVeniceDetail';
 import Home from '../../Screen/Home';
+import EditProfile from '../../components/Detail/EditProfile';
+import OrderHistory from '../../components/Detail/OrderHistory';
 const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
@@ -17,6 +19,8 @@ const HomeStack = () => {
       <Stack.Screen name="VansVeniceDetail" component={VansVeniceDetail} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="OrderDetail" component={OrdersDetail} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="OrderHistory" component={OrderHistory} />
     </Stack.Navigator>
   );
 };
