@@ -1,67 +1,62 @@
 import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localeEn from 'dayjs/locale/en'; // With a custom alias for the locale object
-const ItemNotification = props => {
-  const {id, description, date,remvoteItem} = props;
+const ItemOrderHistory = props => {
+  const {id, date, price, getIdItem, quantity} = props;
   const theme = useSelector(state => state.SwitchColor);
-
-  const handle_date = date => {
-    dayjs.extend(relativeTime).locale(localeEn);
-    let fromNowOn = dayjs(date).fromNow();
-    return fromNowOn;
+  const formatDateTime = time => {
+    let date = new Date(time);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
   };
-
   return (
     <View style={Style.containerParent}>
       <View
         style={theme.color === 'white' ? Style.container : Style.containerDark}>
         <Image
           source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/1156/1156949.png',
+            uri: 'https://cdn-icons-png.flaticon.com/128/7327/7327006.png',
           }}
-          style={Style.image}
+          style={theme.color === 'white' ? Style.image : Style.imageDark}
         />
         <View
           style={theme.color === 'white' ? Style.line : Style.lineDark}></View>
         <View style={Style.body}>
-          <View style={{height: '88%'}}>
-            <Text
-              style={[
-                theme.color === 'white' ? Style.TextName : Style.TextNameDark,
-                {fontSize: 16},
-              ]}>
-              Notification
-            </Text>
+          <View style={{height: '83%'}}>
             <Text
               style={
-                theme.color === 'white' ? Style.TextName : Style.TextNameDark
-              } numberOfLines={3}>
-              {description}
+                theme.color === 'white' ? Style.textTitle : Style.textTitleDrak
+              }>
+              Your Bill
             </Text>
             <Text
               style={
                 theme.color === 'white' ? Style.TextName : Style.TextNameDark
               }>
-              {handle_date(date)}
+              Quantity: {quantity}
+            </Text>
+            <Text
+              style={
+                theme.color === 'white' ? Style.TextName : Style.TextNameDark
+              }>
+              Price: ${price}
+            </Text>
+            <Text
+              style={
+                theme.color === 'white' ? Style.TextName : Style.TextNameDark
+              }>
+              Date: {formatDateTime(date)}
             </Text>
           </View>
         </View>
         <View style={{flex: 1}}>
-          <Pressable onPress={() => remvoteItem(id)}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
-              }}
-              style={
-                theme.color === 'white'
-                  ? Style.itemDelete
-                  : Style.itemDeleteDark
-              }
-            />
-          </Pressable>
+          <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/128/2989/2989988.png',
+            }}
+            style={
+              theme.color === 'white' ? Style.itemDelete : Style.itemDeleteDark
+            }
+          />
         </View>
       </View>
     </View>
@@ -77,7 +72,7 @@ const Style = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 113,
+    height: 105,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'silver',
@@ -88,7 +83,7 @@ const Style = StyleSheet.create({
   },
   containerDark: {
     width: '100%',
-    height: 113,
+    height: 105,
     borderWidth: 1,
     borderRadius: 5,
     flexDirection: 'row',
@@ -101,15 +96,23 @@ const Style = StyleSheet.create({
     height: 50,
     resizeMode: 'center',
     marginLeft: 15,
+    tintColor: 'black',
+  },
+  imageDark: {
+    width: 100,
+    height: 50,
+    resizeMode: 'center',
+    marginLeft: 15,
+    tintColor: 'white',
   },
   line: {
-    height: '80%',
+    height: '70%',
     borderWidth: 0.5,
     borderColor: 'silver',
     marginLeft: 15,
   },
   lineDark: {
-    height: '80%',
+    height: '70%',
     borderWidth: 0.5,
     borderColor: 'white',
     marginLeft: 15,
@@ -118,7 +121,7 @@ const Style = StyleSheet.create({
     height: '100%',
     marginLeft: 15,
     justifyContent: 'center',
-    flex: 6,
+    flex: 5.2,
   },
   TextName: {color: 'black', fontWeight: 'bold', marginBottom: 3, fontSize: 13},
   TextNameDark: {
@@ -127,6 +130,19 @@ const Style = StyleSheet.create({
     marginBottom: 3,
     fontSize: 13,
   },
+  textTitle: {
+    color: 'purple',
+    fontWeight: 'bold',
+    marginBottom: 3,
+    fontSize: 15,
+  },
+  textTitleDrak: {
+    color: 'purple',
+    fontWeight: 'bold',
+    marginBottom: 3,
+    fontSize: 15,
+  },
+
   itemDeleteDark: {
     width: 25,
     height: 25,
@@ -139,4 +155,4 @@ const Style = StyleSheet.create({
   },
 });
 
-export default ItemNotification;
+export default ItemOrderHistory;

@@ -39,14 +39,6 @@ const Account = ({navigation}) => {
         <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
           ACCOUNT
         </Text>
-        <Pressable onPress={() => navigation.toggleDrawer()}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828859.png',
-            }}
-            style={theme.color === 'white' ? Style.image : Style.imageDark}
-          />
-        </Pressable>
       </View>
       {isLoading ? (
         <ActivityIndicator />
@@ -77,7 +69,7 @@ const Account = ({navigation}) => {
                   {data.phone}
                 </Text>
               </View>
-              <Pressable onPress={() => navigation.navigate('EditProfile')}>
+              <Pressable onPress={() => navigation.navigate('EditProfile',{image: data.image, name: data.name, address: data.address, phone: data.phone})}>
                 <Text style={Style.buttonEditProfile}>EDIT PROFILE</Text>
               </Pressable>
             </View>
@@ -112,6 +104,34 @@ const Account = ({navigation}) => {
               </View>
             </Pressable>
             <View style={Style.line}></View>
+            <Pressable onPress={() => navigation.navigate('OrderHistory')}>
+              <View style={[Style.content, {marginTop: 20}]}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/512/3585/3585229.png',
+                    }}
+                    style={
+                      theme.color === 'white' ? Style.icon : Style.iconDark
+                    }
+                  />
+                  <Text
+                    style={
+                      theme.color === 'white'
+                        ? Style.orderText
+                        : Style.orderTextDark
+                    }>
+                    Change Password
+                  </Text>
+                </View>
+                <Image
+                  source={{
+                    uri: 'https://cdn-icons-png.flaticon.com/128/2722/2722985.png',
+                  }}
+                  style={theme.color === 'white' ? Style.icon : Style.iconDark}
+                />
+              </View>
+            </Pressable>
           </View>
         </>
       )}

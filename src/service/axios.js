@@ -7,17 +7,17 @@ import {
 const instance = axios.create({
   baseURL: 'http://192.168.0.103:3000',
   headers: {
-    'Content-Type': 'application/json',
-  },
+    "Content-Type":'application/json'
+  }
 });
 
 instance.interceptors.request.use(
   async config => {
     const token = await getLocalAccessToken();
-
     if (token) {
       config.headers['x_authorization'] = token;
     }
+
     return config;
   },
   error => {

@@ -4,12 +4,15 @@ import CartScreen from '../bottomTab/CartScreen';
 import HomeIcon from 'react-native-vector-icons/Feather';
 import CartIcon from 'react-native-vector-icons/Feather';
 import NotificationIcon from 'react-native-vector-icons/Ionicons';
+import AccountIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import OrderIcon from 'react-native-vector-icons/FontAwesome5';
 
 const BottomStack = createBottomTabNavigator();
 import {useSelector} from 'react-redux';
 import OrderScreen from '../bottomTab/OrderScreen';
 import Notification from '../bottomTab/NotificationScreen';
+import Account from '../bottomTab/AccountScreen';
 function Home() {
   const theme = useSelector(state => state.SwitchColor);
   const display = useSelector(state => state.tabbarStatus);
@@ -87,6 +90,20 @@ function Home() {
           ),
         }}
       />
+       <BottomStack.Screen
+        name="Profile"
+        component={Account}
+        options={{
+          tabBarIcon: ({color}) => (
+            <AccountIcon
+              name="account-circle-outline"
+              size={28}
+              color={color}
+            />
+          ),
+        }}
+      />
+
     </BottomStack.Navigator>
   );
 }
