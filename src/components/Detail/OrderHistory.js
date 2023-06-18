@@ -15,7 +15,6 @@ import {getUserId} from '../../service/user.service';
 import ItemOrderHistory from '../Item/ItemOrderHistory';
 const OrderHistory = ({navigation}) => {
   const theme = useSelector(theme => theme.SwitchColor);
-  const [userId, setUserId] = React.useState(null);
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -60,11 +59,21 @@ const OrderHistory = ({navigation}) => {
             keyExtractor={item => item.id}
             data={data}
             renderItem={({item}) => (
-              <ItemOrderHistory
-                price={item.totalPrice}
-                date={item.date}
-                quantity={JSON.parse(item.cartItem).length}
-              />
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('OrdersHistoryDetail', {
+                    data: JSON.parse(item.cartItem),
+                    totalPrice: item.totalPrice,
+                    address: item.address,
+                    time: item.date,
+                  })
+                }>
+                <ItemOrderHistory
+                  price={item.totalPrice}
+                  date={item.date}
+                  quantity={JSON.parse(item.cartItem).length}
+                />
+              </Pressable>
             )}
           />
         </View>
