@@ -4,7 +4,7 @@ import OrdersDetail from '../../components/Detail/OrdersDetail';
 import VansVeniceDetail from '../../components/Detail/VansVeniceDetail';
 import Home from '../../Screen/Home';
 import EditProfile from '../../components/Detail/EditProfile';
-import OrderHistory from '../../components/Detail/OrderHistory';
+import OrderHistory from '../../Screen/orderHistory/OrderHistory';
 import OrdersHistoryDetail from '../../components/Detail/OrdersHistoryDetail';
 const Stack = createNativeStackNavigator();
 const HomeStack = () => {
