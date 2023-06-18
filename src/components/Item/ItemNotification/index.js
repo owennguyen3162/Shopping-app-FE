@@ -38,7 +38,7 @@ const ItemNotification = props => {
             <Text
               style={
                 theme.color === 'white' ? Style.TextName : Style.TextNameDark
-              }>
+              } numberOfLines={3}>
               {description}
             </Text>
             <Text
