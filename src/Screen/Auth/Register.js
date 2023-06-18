@@ -89,6 +89,7 @@ const Register = ({navigation}) => {
         // textColor={theme.color === 'white' ? 'black' : 'white'}
         placeholder="Password"
         value={password}
+        secureTextEntry = {passwordStatus ? false: true}
         onChangeText={text => setPassword(text)}
       />
       <TextInput
@@ -103,7 +104,7 @@ const Register = ({navigation}) => {
         // textColor={theme.color === 'white' ? 'black' : 'white'}
         placeholder="Verify"
         value={verify}
-        secureTextEntry
+        secureTextEntry = {verifyStatus ? false: true}
         onChangeText={text => setVerify(text)}
       />
 
