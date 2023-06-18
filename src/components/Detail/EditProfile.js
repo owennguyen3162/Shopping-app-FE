@@ -1,24 +1,16 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  Pressable,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable, Alert} from 'react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
-import axios from 'axios';
+import {TextInput} from 'react-native-paper';
 
 const EditProfile = ({navigation, route}) => {
   const theme = useSelector(theme => theme.SwitchColor);
   const {name, phone, address, image} = route.params;
   const [Name, setName] = React.useState(name);
-  const [Address, setAdress] = React.useState(address);
+  const [Address, setAddress] = React.useState(address);
   const [imageLib, setImage] = React.useState(image);
   const [userId, setUserId] = React.useState(null);
 
@@ -47,8 +39,10 @@ const EditProfile = ({navigation, route}) => {
       const data = await instance.put(`/api/user/${userId}`, formData, {
         headers: {'Content-Type': 'multipart/form-data'},
       });
-      if(data.status === 200){
-        Alert.alert('Notification', 'Edit successfully', [{text: 'OK', style: 'cancel', onPress: () => navigation.goBack()}]);
+      if (data.status === 200) {
+        Alert.alert('Notification', 'Edit successfully', [
+          {text: 'OK', style: 'cancel', onPress: () => navigation.goBack()},
+        ]);
       }
     } catch (error) {
       Alert.alert('Notification', 'Edit fail', [{text: 'OK', style: 'cancel'}]);
@@ -103,27 +97,38 @@ const EditProfile = ({navigation, route}) => {
           />
         </Pressable>
         <TextInput
+          mode="outlined"
+          right={<TextInput.Icon icon="phone" />}
           style={
             theme.color === 'white'
-              ? [Style.textInput, {marginTop: 20, color: 'black'}]
-              : [Style.textInputDark, {marginTop: 20, color: 'white'}]
+              ? [Style.textInput, {marginTop: 20}]
+              : [Style.textInputDark, {marginTop: 20}]
           }
+          textColor={theme.color === 'white' ? 'black' : 'white'}
+          placeholder="Phone"
           value={phone}
-          editable={false}
         />
         <TextInput
+          mode="outlined"
+          right={<TextInput.Icon icon="face-man-profile" />}
           style={
             theme.color === 'white' ? Style.textInput : Style.textInputDark
           }
+          textColor={theme.color === 'white' ? 'black' : 'white'}
+          placeholder="Name"
           value={Name}
-          onChangeText={text => setName(text)}
+          onChangeText={(text) => setName(text)}
         />
         <TextInput
+          mode="outlined"
+          right={<TextInput.Icon icon="map-marker" />}
           style={
             theme.color === 'white' ? Style.textInput : Style.textInputDark
           }
+          textColor={theme.color === 'white' ? 'black' : 'white'}
+          placeholder="address"
           value={Address}
-          onChangeText={text => setAdress(text)}
+          onChangeText={(text) => setAddress(text)}
         />
       </View>
     </View>
@@ -149,22 +154,15 @@ const Style = StyleSheet.create({
   titleDark: {fontWeight: 'bold', fontSize: 17, color: 'white'},
   textInput: {
     width: '100%',
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'silver',
-    borderRadius: 10,
+    backgroundColor: 'white',
+    color: 'white',
     marginVertical: 8,
-    paddingLeft: 10,
   },
   textInputDark: {
     width: '100%',
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'silver',
-    borderRadius: 10,
-    marginVertical: 8,
+    backgroundColor: 'black',
     color: 'white',
-    paddingLeft: 10,
+    marginVertical: 8,
   },
   header: {
     marginTop: 20,
