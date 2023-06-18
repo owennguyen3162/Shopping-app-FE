@@ -104,7 +104,7 @@ const Account = ({navigation}) => {
               </View>
             </Pressable>
             <View style={Style.line}></View>
-            <Pressable onPress={() => navigation.navigate('OrderHistory')}>
+            <Pressable onPress={() => navigation.navigate('ChangePassword')}>
               <View style={[Style.content, {marginTop: 20}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Image
