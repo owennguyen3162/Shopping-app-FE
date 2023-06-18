@@ -8,7 +8,6 @@ import {
   useDrawerProgress,
 } from '@react-navigation/drawer';
 import Pants from '../clothes/Pants';
-import Account from '../Account';
 import Sweaters from '../clothes/Sweaters';
 import Accesories from '../clothes/Accesories';
 import Shoes from '../clothes/Shoes';
@@ -218,21 +217,6 @@ function HomeScreen() {
             <Image
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/128/2093/2093938.png',
-              }}
-              style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
-              resizeMode="contain"
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Account"
-        component={Account}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/64/64572.png',
               }}
               style={theme.color === 'white' ? Style.iconWhite : Style.iconDark}
               resizeMode="contain"
