@@ -32,6 +32,13 @@ const Login = ({navigation}) => {
     navigation.navigate('Register');
   };
   const handleLogin = async () => {
+    if (!Phone || !password) {
+      return Alert.alert(
+        'Warning',
+        'Please enter enough information',
+        [{text: 'OK', style: 'cancel'}],
+      );
+    }
     setIsLoading(true);
     await messaging().registerDeviceForRemoteMessages();
     const token = await messaging().getToken();
