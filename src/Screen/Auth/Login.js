@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  Pressable,
 } from 'react-native';
 import React from 'react';
 import instance from '../../service/axios';
