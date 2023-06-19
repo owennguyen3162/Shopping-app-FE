@@ -14,40 +14,13 @@ import {
 import React from 'react';
 import Item from '../../components/Item/Item';
 import {useSelector} from 'react-redux';
-import instance from '../../service/axios';
+import useFetch from '../../components/hook/useFetch';
 
 const Accesories = ({navigation}) => {
-  const [data, setData] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const {data, isLoading, error, refreshing, onRefresh} = useFetch(
+    `/api/products/accesories`,
+  );
 
-  React.useEffect(() => {
-    fetchData();
-  }, []);
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    instance
-      .get('/api/products/accesories')
-      .then(data => {
-        data.status === 200
-          ? setData(data.data.data)
-          : Alert.alert('warning', 'Get Data Fail', [
-              {text: 'ok', style: 'cancel'},
-            ]);
-      })
-      .catch(error =>
-        Alert.alert('warning', 'server error', [{text: 'ok', style: 'cancel'}]),
-      )
-      .finally(() => {
-        setIsLoading(false);
-        setRefreshing(false);
-      });
-  };
   const theme = useSelector(state => state.SwitchColor);
   return (
     <View
@@ -55,6 +28,10 @@ const Accesories = ({navigation}) => {
       <StatusBar hidden={true} />
       {isLoading ? (
         <ActivityIndicator size={'large'} />
+      ) : error ? (
+        Alert.alert('Notification', 'Server error', [
+          {text: 'OK', style: 'cancel'},
+        ])
       ) : (
         <>
           <View style={Style.header}>
