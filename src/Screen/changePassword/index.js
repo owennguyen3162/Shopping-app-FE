@@ -19,11 +19,8 @@ const ChangePassword = ({navigation}) => {
 
   const handleChangePassword = async () => {
     if (!passwordNew || !verify || !password) {
-      return Alert.alert('Notification', 'Empty Value !!', [
-        {
-          text: 'OK',
-          style: 'cancel',
-        },
+      return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
       ]);
     }
 
