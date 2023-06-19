@@ -6,6 +6,7 @@ import Home from '../../Screen/Home';
 import EditProfile from '../../components/Detail/EditProfile';
 import OrderHistory from '../../Screen/orderHistory/OrderHistory';
 import OrdersHistoryDetail from '../../components/Detail/OrdersHistoryDetail';
+import ChangePassword from '../../Screen/changePassword';
 const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
@@ -26,6 +27,8 @@ const HomeStack = () => {
         name="OrdersHistoryDetail"
         component={OrdersHistoryDetail}
       />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+
     </Stack.Navigator>
   );
 };

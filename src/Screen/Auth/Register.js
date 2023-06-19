@@ -2,9 +2,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   StatusBar,
-  KeyboardAvoidingView,
   Image,
   TouchableOpacity,
   Alert,
@@ -12,6 +10,7 @@ import {
 import React from 'react';
 import instance from '../../service/axios';
 import messaging from '@react-native-firebase/messaging';
+import {TextInput} from 'react-native-paper';
 const Register = ({navigation}) => {
   const navigationLogin = () => {
     navigation.goBack();
@@ -21,9 +20,18 @@ const Register = ({navigation}) => {
   const [password, setPassword] = React.useState(null);
   const [verify, setVerify] = React.useState(null);
 
+  const [passwordStatus, setPasswordStatus] = React.useState(false);
+  const [verifyStatus, setVerifyStatus] = React.useState(false);
+
   const handleRegister = async () => {
+    let regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
     if (!phone || !name || !password || !verify) {
       return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
+    if(!regex.test(phone)){
+      return Alert.alert('Warning', 'Please enter the phone number in the correct format', [
         {text: 'OK', style: 'cancel'},
       ]);
     }
@@ -58,26 +66,52 @@ const Register = ({navigation}) => {
         style={Style.image}
       />
       <TextInput
+        mode="outlined"
+        right={<TextInput.Icon icon="phone" />}
         style={Style.textInput}
-        placeholder="phone"
+        // textColor={theme.color === 'white' ? 'black' : 'white'}
+        placeholder="Phone"
+        value={phone}
         onChangeText={text => setphone(text)}
       />
       <TextInput
+        mode="outlined"
+        right={<TextInput.Icon icon="face-man-profile" />}
         style={Style.textInput}
+        // textColor={theme.color === 'white' ? 'black' : 'white'}
         placeholder="Name"
+        value={name}
         onChangeText={text => setName(text)}
       />
       <TextInput
+        mode="outlined"
+        right={
+          <TextInput.Icon
+            icon={passwordStatus ? 'eye' : 'eye-off'}
+            onPress={() => setPasswordStatus(!passwordStatus)}
+          />
+        }
         style={Style.textInput}
+        // textColor={theme.color === 'white' ? 'black' : 'white'}
         placeholder="Password"
+        value={password}
+        secureTextEntry = {passwordStatus ? false: true}
         onChangeText={text => setPassword(text)}
-        secureTextEntry
       />
       <TextInput
+        mode="outlined"
+        right={
+          <TextInput.Icon
+            icon={verifyStatus ? 'eye' : 'eye-off'}
+            onPress={() => setVerifyStatus(!verifyStatus)}
+          />
+        }
         style={Style.textInput}
+        // textColor={theme.color === 'white' ? 'black' : 'white'}
         placeholder="Verify"
+        value={verify}
+        secureTextEntry = {verifyStatus ? false: true}
         onChangeText={text => setVerify(text)}
-        secureTextEntry
       />
 
       <TouchableOpacity style={Style.button} onPress={() => handleRegister()}>
@@ -104,13 +138,17 @@ const Style = StyleSheet.create({
     paddingHorizontal: 20,
   },
   textInput: {
-    borderWidth: 1,
-    borderColor: 'silver',
     width: '100%',
-    borderRadius: 6,
-    marginVertical: 10,
-    paddingLeft: 10,
+    backgroundColor: 'white',
+    color: 'white',
+    marginVertical: 8,
   },
+  // textInputDark: {
+  //   width: '100%',
+  //   backgroundColor: 'black',
+  //   color: 'white',
+  //   marginVertical: 8,
+  // },
   row: {
     flexDirection: 'row',
     marginTop: 20,

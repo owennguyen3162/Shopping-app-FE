@@ -1,63 +1,72 @@
 import {View, Text, StyleSheet, Image, Pressable, Alert} from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {useSelector, useDispatch} from 'react-redux';
 import instance from '../../service/axios';
-import {getUserId} from '../../service/user.service';
+import {getUserId, removeCurrentUser} from '../../service/user.service';
 import {TextInput} from 'react-native-paper';
+import {_handleLogout} from '../../redux/action/auth.action';
 
-const EditProfile = ({navigation, route}) => {
+const ChangePassword = ({navigation}) => {
   const theme = useSelector(theme => theme.SwitchColor);
-  const {name, phone, address, image} = route.params;
-  const [Name, setName] = React.useState(name);
-  const [Address, setAddress] = React.useState(address);
-  const [imageLib, setImage] = React.useState(image);
+  const [password, setPassword] = React.useState('');
+  const [passwordNew, setPasswordNew] = React.useState('');
+  const [verify, setVerify] = React.useState('');
   const [userId, setUserId] = React.useState(null);
+  const [passwordStatus, setPasswordStatus] = React.useState(false);
+  const [passwordNewStatus, setPasswordNewStatus] = React.useState(false);
+  const [verifyStatus, setVerifyStatus] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const openCamera = async () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      quality: 1,
-    };
-    const result = await launchImageLibrary(options);
-    if (result.assets) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const handleEdit = async () => {
-    if (!Name || !Address) {
+  const handleChangePassword = async () => {
+    if (!passwordNew || !verify || !password) {
       return Alert.alert('Warning', 'Please enter enough information', [
         {text: 'OK', style: 'cancel'},
       ]);
     }
 
-    const formData = new FormData();
-    formData.append('name', Name);
-    formData.append('address', Address);
-    formData.append('userImage', {
-      uri: imageLib,
-      name: 'imageFromMobile.jpg',
-      type: 'image/jpg',
-    });
+    if (passwordNew !== verify) {
+      return Alert.alert(
+        'Notification',
+        'The re-entered password is incorrect !!',
+        [
+          {
+            text: 'OK',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+
     try {
-      const data = await instance.put(`/api/user/${userId}`, formData, {
-        headers: {'Content-Type': 'multipart/form-data'},
+      const data = await instance.put(`/api/user/changePassword/${userId}`, {
+        password: passwordNew,
+        passwordOld: password,
       });
       if (data.status === 200) {
-        Alert.alert('Notification', 'Edit successfully', [
-          {text: 'OK', style: 'cancel', onPress: () => navigation.goBack()},
-        ]);
+        Alert.alert(
+          'Notification',
+          'Password changed successfully, please login again',
+          [
+            {
+              text: 'OK',
+              style: 'cancel',
+              onPress: () =>
+                removeCurrentUser().then(res => dispatch(_handleLogout())),
+            },
+          ],
+        );
       }
     } catch (error) {
-      Alert.alert('Notification', 'Edit fail', [{text: 'OK', style: 'cancel'}]);
+      console.log(error);
+      Alert.alert('Notification', 'Change failed', [
+        {text: 'OK', style: 'cancel'},
+      ]);
     }
   };
 
   React.useEffect(() => {
     getUserId()
-      .then(res => setUserId(res))
+      .then(id => setUserId(id))
       .catch(error => console.log(error));
   }, []);
 
@@ -75,10 +84,10 @@ const EditProfile = ({navigation, route}) => {
         </Pressable>
 
         <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
-          EDIT PROFILE
+          CHANGE PASSWORD
         </Text>
 
-        <Pressable onPress={() => handleEdit()}>
+        <Pressable onPress={() => handleChangePassword()}>
           <Image
             source={{
               uri: 'https://cdn-icons-png.flaticon.com/128/5996/5996831.png',
@@ -90,51 +99,56 @@ const EditProfile = ({navigation, route}) => {
       </View>
       <View
         style={{marginTop: 30, flex: 1, width: '100%', alignItems: 'center'}}>
-        <Pressable onPress={() => openCamera()}>
-          <Image
-            source={{
-              uri: imageLib,
-            }}
-            style={{
-              width: 150,
-              height: 150,
-              borderRadius: 100,
-            }}
-          />
-        </Pressable>
         <TextInput
+          secureTextEntry={passwordStatus ? false : true}
           mode="outlined"
-          right={<TextInput.Icon icon="phone" />}
-          style={
-            theme.color === 'white'
-              ? [Style.textInput, {marginTop: 20}]
-              : [Style.textInputDark, {marginTop: 20}]
+          right={
+            <TextInput.Icon
+              icon={passwordStatus ? 'eye' : 'eye-off'}
+              onPress={() => setPasswordStatus(!passwordStatus)}
+            />
           }
+          style={
+            theme.color === 'white' ? Style.textInput : Style.textInputDark
+          }
+          placeholder="Password old"
           textColor={theme.color === 'white' ? 'black' : 'white'}
-          placeholder="Phone"
-          value={phone}
+          onChangeText={text => setPassword(text)}
+          value={password}
         />
         <TextInput
+          secureTextEntry={verifyStatus ? false : true}
           mode="outlined"
-          right={<TextInput.Icon icon="face-man-profile" />}
+          right={
+            <TextInput.Icon
+              icon={passwordNewStatus ? 'eye' : 'eye-off'}
+              onPress={() => setPasswordNewStatus(!passwordNewStatus)}
+            />
+          }
           style={
             theme.color === 'white' ? Style.textInput : Style.textInputDark
           }
           textColor={theme.color === 'white' ? 'black' : 'white'}
-          placeholder="Name"
-          value={Name}
-          onChangeText={text => setName(text)}
+          placeholder="Password new"
+          onChangeText={text => setPasswordNew(text)}
+          value={passwordNew}
         />
         <TextInput
+          secureTextEntry={verifyStatus ? false : true}
           mode="outlined"
-          right={<TextInput.Icon icon="map-marker" />}
+          right={
+            <TextInput.Icon
+              icon={verifyStatus ? 'eye' : 'eye-off'}
+              onPress={() => setVerifyStatus(!verifyStatus)}
+            />
+          }
           style={
             theme.color === 'white' ? Style.textInput : Style.textInputDark
           }
           textColor={theme.color === 'white' ? 'black' : 'white'}
-          placeholder="address"
-          value={Address}
-          onChangeText={text => setAddress(text)}
+          placeholder="Verify"
+          onChangeText={text => setVerify(text)}
+          value={verify}
         />
       </View>
     </View>
@@ -178,4 +192,4 @@ const Style = StyleSheet.create({
     width: '100%',
   },
 });
-export default EditProfile;
+export default ChangePassword;
