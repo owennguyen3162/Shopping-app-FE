@@ -121,7 +121,7 @@ function HomeScreen() {
               headerShown: false,
               drawerLabelStyle: {
                 fontWeight: 'bold',
-                color: '#333333',
+                color: '#444444',
               },
               drawerActiveBackgroundColor: 'darkviolet',
             }
@@ -230,6 +230,7 @@ function HomeScreen() {
 const Style = StyleSheet.create({
   imageWhite: {
     marginVertical: 30,
+    tintColor:"#444444"
   },
   imageDark: {
     marginVertical: 30,
@@ -264,6 +265,6 @@ const Style = StyleSheet.create({
     marginBottom: 20,
   },
   iconDark: {width: 30, height: 30, tintColor: 'white'},
-  iconWhite: {width: 30, height: 30},
+  iconWhite: {width: 30, height: 30, tintColor:"#444444"},
 });
 export default HomeScreen;
