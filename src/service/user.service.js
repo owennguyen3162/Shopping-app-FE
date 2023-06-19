@@ -25,6 +25,6 @@ export const removeCurrentUser = async () => {
   try {
     await AsyncStorage.clear();
   } catch (error) {
-    console.log('get User id failed' + error);
+    console.log('clear error' + error);
   }
 };
