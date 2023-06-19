@@ -119,7 +119,12 @@ const Notification = () => {
             backdropTransitionInTiming={1000}
             backdropTransitionOutTiming={500}
             style={Style.modal}>
-            <View style={Style.modalContent}>
+            <View
+              style={
+                theme.color === 'white'
+                  ? Style.modalContent
+                  : Style.modalContentDark
+              }>
               <View style={Style.center}>
                 <View style={Style.barIcon} />
 
@@ -137,7 +142,12 @@ const Notification = () => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={Style.text}>Delete</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Delete
+                      </Text>
                     </View>
                   </Pressable>
                   <View style={Style.line}></View>
@@ -154,7 +164,12 @@ const Notification = () => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={Style.text}>Cancel</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Cancel
+                      </Text>
                     </View>
                   </Pressable>
 
@@ -198,7 +213,7 @@ const Style = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0,
   },
-  modalContent: {
+  modalContentDark: {
     backgroundColor: '#161616',
     paddingTop: 12,
     paddingHorizontal: 12,
@@ -207,6 +222,16 @@ const Style = StyleSheet.create({
     minHeight: 400,
     paddingBottom: 20,
   },
+  modalContent: {
+    backgroundColor: 'white',
+    paddingTop: 12,
+    paddingHorizontal: 12,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    minHeight: 400,
+    paddingBottom: 20,
+  },
+
   center: {
     alignItems: 'center',
   },
@@ -217,6 +242,12 @@ const Style = StyleSheet.create({
     borderRadius: 3,
   },
   text: {
+    color: 'black',
+    fontSize: 16,
+    paddingVertical: 20,
+    marginLeft: 20,
+  },
+  textDark: {
     color: 'white',
     fontSize: 16,
     paddingVertical: 20,

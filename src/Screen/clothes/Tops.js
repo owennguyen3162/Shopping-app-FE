@@ -236,7 +236,7 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  Logo: {width: 120, height: 45},
+  Logo: {width: 120, height: 45, tintColor:'#444444'},
   LogoDark: {tintColor: 'white', width: 120, height: 45},
 });
 export default Tops;
