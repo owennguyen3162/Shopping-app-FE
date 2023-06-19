@@ -14,17 +14,16 @@ import {useSelector} from 'react-redux';
 import ItemCart from '../../components/Item/ItemCart';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
-import {RadioButton} from 'react-native-paper';
-import BottomSheet from '../../components/bottomSheet';
+import {RadioButton, TextInput} from 'react-native-paper';
 import Modal from 'react-native-modal';
 const CartScreen = () => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
   const [price, setPrice] = React.useState(0);
-  const [address, setAddress] = React.useState('ba vi, Ha noi');
+  const [address, setAddress] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [value, setValue] = React.useState(false);
+  const [editAddress, setEditAddress] = React.useState(false);
   const [cartId, setCartId] = React.useState(null);
   const [isModalVisible, setModalVisible] = React.useState(false);
 
@@ -37,10 +36,14 @@ const CartScreen = () => {
     try {
       const res = await instance.get('/api/cart/' + (await getUserId()));
       if (res.status === 200) {
-        setData(res.data);
-        setPrice(handle_TotalPrice(res.data));
+        if (res.data.length !== 0) {
+          setData(res.data);
+          setPrice(handle_TotalPrice(res.data));
+          setAddress(res.data[0].address);
+        }
       }
     } catch (error) {
+      console.log(error);
       Alert.alert('notification', 'error', [{text: 'OK', style: 'cancel'}]);
     } finally {
       setIsLoading(false);
@@ -59,12 +62,14 @@ const CartScreen = () => {
         },
       );
       if (res.status === 201) {
-        getData();
+        return getData();
       }
     } catch (error) {
-      Alert.alert('notification', 'error:::' + error, [
+      Alert.alert('notification', 'error' + error, [
         {text: 'OK', style: 'cancel'},
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
   const handle_TotalPrice = data => {
@@ -78,9 +83,8 @@ const CartScreen = () => {
     setCartId(id);
   };
 
-  // console.log(isModalVisible);
   const removeItem = async () => {
-    toggleModal()
+    toggleModal();
     Alert.alert('Notification', 'Are you sure', [
       {
         text: 'OK',
@@ -111,14 +115,12 @@ const CartScreen = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  // console.log(data);
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
@@ -161,19 +163,58 @@ const CartScreen = () => {
               )}
             />
           </View>
-          <View style={{flex: 5}}>
+          <View style={{flex: 5.8}}>
             <Text
               style={
                 theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
               }>
               Shipping address
             </Text>
-            <Text
-              style={
-                theme.color === 'white' ? Style.textBold : Style.textBoldDark
-              }>
-              Ba vi, Ha Noi
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              {editAddress ? (
+                <TextInput
+                  mode="outlined"
+                  right={<TextInput.Icon icon="map-marker" />}
+                  style={
+                    theme.color === 'white'
+                      ? Style.textInput
+                      : Style.textInputDark
+                  }
+                  textColor={theme.color === 'white' ? 'black' : 'white'}
+                  placeholder="address"
+                  value={address}
+                  onChangeText={text => setAddress(text)}
+                />
+              ) : (
+                <Text
+                  style={
+                    theme.color === 'white'
+                      ? Style.textBold
+                      : Style.textBoldDark
+                  }>
+                  {address}
+                </Text>
+              )}
+              <Pressable onPress={() => setEditAddress(!editAddress)}>
+                <Image
+                  source={{
+                    uri: editAddress
+                      ? 'https://cdn-icons-png.flaticon.com/512/61/61222.png'
+                      : 'https://cdn-icons-png.flaticon.com/512/2740/2740651.png',
+                  }}
+                  style={
+                    theme.color === 'white' ? Style.image : Style.imageDark
+                  }
+                  resizeMode="stretch"
+                />
+              </Pressable>
+            </View>
+
             <Text
               style={
                 theme.color === 'white' ? Style.textBold2 : Style.textBol2dDark
@@ -300,7 +341,6 @@ const CartScreen = () => {
               </View>
             </View>
           </Modal>
-          {/* <BottomSheet value={value} removeItem={removeItem} /> */}
         </>
       )}
     </View>
@@ -367,7 +407,11 @@ const Style = StyleSheet.create({
     borderColor: 'white',
     marginVertical: 10,
   },
-  footer: {flexDirection: 'row', justifyContent: 'space-between'},
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+  },
   textFooter: {color: 'black', fontWeight: 'bold'},
   textFooterDark: {color: 'white', fontWeight: 'bold'},
   textBold2: {
@@ -424,6 +468,22 @@ const Style = StyleSheet.create({
   line: {
     borderBottomWidth: 1,
     borderBottomColor: 'silver',
+  },
+  image: {width: 20, height: 20},
+  imageDark: {width: 20, height: 20, tintColor: 'white'},
+  textInput: {
+    width: '85%',
+    height: 40,
+    backgroundColor: 'white',
+    color: 'white',
+    marginVertical: 8,
+  },
+  textInputDark: {
+    width: '85%',
+    height: 40,
+    backgroundColor: 'black',
+    color: 'white',
+    marginVertical: 8,
   },
 });
 export default CartScreen;
