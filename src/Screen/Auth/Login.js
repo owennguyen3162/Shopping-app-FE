@@ -20,6 +20,8 @@ import {useDispatch} from 'react-redux';
 import {_handleLogin} from '../../redux/action/auth.action';
 import messaging from '@react-native-firebase/messaging';
 import {TextInput} from 'react-native-paper';
+import {getColorToStorage} from '../../service';
+import {SwitchColor} from '../../redux/action/changeColor';
 const Login = ({navigation}) => {
   const [Phone, setPhone] = React.useState(null);
   const [password, setPassword] = React.useState(null);
@@ -33,11 +35,9 @@ const Login = ({navigation}) => {
   };
   const handleLogin = async () => {
     if (!Phone || !password) {
-      return Alert.alert(
-        'Warning',
-        'Please enter enough information',
-        [{text: 'OK', style: 'cancel'}],
-      );
+      return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
+      ]);
     }
     setIsLoading(true);
     await messaging().registerDeviceForRemoteMessages();
@@ -62,6 +62,15 @@ const Login = ({navigation}) => {
         ]),
       )
       .finally(() => setIsLoading(false));
+  };
+
+  React.useEffect(() => {
+    getTheme();
+  }, []);
+  const getTheme = async () => {
+    getColorToStorage().then(res => {
+      dispatch(SwitchColor(res));
+    });
   };
   return (
     <View style={Style.container}>
