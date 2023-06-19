@@ -24,8 +24,14 @@ const Register = ({navigation}) => {
   const [verifyStatus, setVerifyStatus] = React.useState(false);
 
   const handleRegister = async () => {
+    let regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
     if (!phone || !name || !password || !verify) {
       return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
+    if(!regex.test(phone)){
+      return Alert.alert('Warning', 'Please enter the phone number in the correct format', [
         {text: 'OK', style: 'cancel'},
       ]);
     }
