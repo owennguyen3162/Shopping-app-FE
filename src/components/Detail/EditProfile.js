@@ -27,6 +27,12 @@ const EditProfile = ({navigation, route}) => {
   };
 
   const handleEdit = async () => {
+    if (!Name || !Address) {
+      return Alert.alert('Warning', 'Please enter enough information', [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    }
+
     const formData = new FormData();
     formData.append('name', Name);
     formData.append('address', Address);
@@ -117,7 +123,7 @@ const EditProfile = ({navigation, route}) => {
           textColor={theme.color === 'white' ? 'black' : 'white'}
           placeholder="Name"
           value={Name}
-          onChangeText={(text) => setName(text)}
+          onChangeText={text => setName(text)}
         />
         <TextInput
           mode="outlined"
@@ -128,7 +134,7 @@ const EditProfile = ({navigation, route}) => {
           textColor={theme.color === 'white' ? 'black' : 'white'}
           placeholder="address"
           value={Address}
-          onChangeText={(text) => setAddress(text)}
+          onChangeText={text => setAddress(text)}
         />
       </View>
     </View>
