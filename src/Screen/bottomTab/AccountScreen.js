@@ -157,18 +157,20 @@ const Style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
     marginBottom: 25,
   },
   text: {
     color: '#000000',
     fontWeight: 'bold',
     fontSize: 20,
+    marginTop: 40
   },
   textDark: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+    marginTop: 40
+
   },
   image: {
     width: 25,
