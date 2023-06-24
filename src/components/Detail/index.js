@@ -9,13 +9,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
+import {count_quantity} from '../../redux/action/cart.action';
 const ProductDetail = ({navigation, route}) => {
   const [size, setSize] = React.useState('S');
   const [isLoading, setIsLoading] = React.useState(false);
   const theme = useSelector(state => state.SwitchColor);
+  const cartQuantity = useSelector(state => state.Cart);
+  const dispatch = useDispatch();
   const {name, image, id, description, price} = route.params;
   const handleAddToCart = async () => {
     setIsLoading(true);
@@ -26,6 +29,7 @@ const ProductDetail = ({navigation, route}) => {
         size: size,
       });
       if (res.status === 201) {
+        dispatch(count_quantity(cartQuantity.quantity));
         return Alert.alert('Notification', 'Add to cart successfully', [
           {text: 'OK'},
         ]);
@@ -44,7 +48,7 @@ const ProductDetail = ({navigation, route}) => {
         style={{width: '100%'}}>
         <Image
           source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/151/151846.png',
+            uri: 'https://cdn-icons-png.flaticon.com/128/2732/2732652.png',
           }}
           style={
             theme.color === 'white' ? Style.backImage : Style.backImageDark

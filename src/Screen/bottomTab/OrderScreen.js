@@ -10,11 +10,13 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import ItemOrder from '../../components/Item/ItemOrder';
 import Modal from 'react-native-modal';
+import {reduce_quantityOD} from '../../redux/action/order.action';
+import {remote_orderSide} from '../../redux/action/cart.action';
 const OrderScreen = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
@@ -22,8 +24,11 @@ const OrderScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isModalVisible, setModalVisible] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
+  const [quantityCart, setquantityCart] = React.useState(0);
+  const orderQuantity = useSelector(state => state.Order);
+  const cartQuantity = useSelector(state => state.Cart);
 
-
+  const dispatch = useDispatch();
   React.useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,8 +52,9 @@ const OrderScreen = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const remvoteItem = async id => {
-    setOrderId(id)
+  const remvoteItem = async (id, quantity) => {
+    setOrderId(id);
+    setquantityCart(quantity);
     toggleModal();
   };
   const handleRemoveItem = () => {
@@ -59,8 +65,12 @@ const OrderScreen = ({navigation}) => {
         onPress: async () => {
           setIsLoading(true);
           try {
-            const res = await instance.delete(`/api/order/removeOrder/${orderId}`);
+            const res = await instance.delete(
+              `/api/order/removeOrder/${orderId}`,
+            );
             if (res.status === 204) {
+              dispatch(reduce_quantityOD(orderQuantity.quantity));
+              dispatch(remote_orderSide(quantityCart, cartQuantity.quantity));
               getData();
             }
           } catch (error) {
@@ -111,7 +121,7 @@ const OrderScreen = ({navigation}) => {
                       totalPrice: item.totalPrice,
                       address: item.address,
                       time: item.date,
-                      status: item.status
+                      status: item.status,
                     })
                   }>
                   <ItemOrder
@@ -141,7 +151,12 @@ const OrderScreen = ({navigation}) => {
             backdropTransitionInTiming={1000}
             backdropTransitionOutTiming={500}
             style={Style.modal}>
-            <View style={theme.color === "white" ? Style.modalContent: Style.modalContentDark}>
+            <View
+              style={
+                theme.color === 'white'
+                  ? Style.modalContent
+                  : Style.modalContentDark
+              }>
               <View style={Style.center}>
                 <View style={Style.barIcon} />
 
@@ -159,7 +174,12 @@ const OrderScreen = ({navigation}) => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={theme.color === "white" ? Style.text: Style.textDark}>Delete</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Delete
+                      </Text>
                     </View>
                   </Pressable>
                   <View style={Style.line}></View>
@@ -176,7 +196,12 @@ const OrderScreen = ({navigation}) => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={theme.color === "white" ? Style.text: Style.textDark}>Cancel</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Cancel
+                      </Text>
                     </View>
                   </Pressable>
 

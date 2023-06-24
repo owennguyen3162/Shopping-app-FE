@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import ItemHorizontal from '../../components/Item/ItemHorizontal';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import instance from '../../service/axios';
 import {
   createChannel,
@@ -21,13 +21,16 @@ import {
   showNotification,
 } from '../../service/notification';
 import messaging from '@react-native-firebase/messaging';
+import {getUserId} from '../../service/user.service';
+import {get_quantity} from '../../redux/action/cart.action';
+import {get_quantityOD} from '../../redux/action/order.action';
 const Tops = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
-
   const [Data, setData] = React.useState([]);
   const [dataSelling, setBestSelling] = React.useState([]);
-
   const [isloading, setIsLoading] = React.useState(true);
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     fetchData();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -44,8 +47,22 @@ const Tops = ({navigation}) => {
     try {
       const data = await instance.get('/api/products/newArrivals');
       const bestSelling = await instance.get('/api/products/bestSelling');
+      const getQuantityCart = await instance.get(
+        '/api/cart/' + (await getUserId()),
+      );
+      const getQuantityOder = await instance.get(
+        '/api/order/' + (await getUserId()),
+      );
+
       setData(data.data.data);
       setBestSelling(bestSelling.data.data);
+      if (getQuantityCart.status === 200) {
+        dispatch(get_quantity(getQuantityCart.data.length));
+      }
+
+      if (getQuantityOder.status === 200) {
+        dispatch(get_quantityOD(getQuantityOder.data.data.length));
+      }
     } catch (error) {
       {
         console.log(error);
@@ -236,7 +253,7 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  Logo: {width: 120, height: 45, tintColor:'#444444'},
+  Logo: {width: 120, height: 45, tintColor: '#444444'},
   LogoDark: {tintColor: 'white', width: 120, height: 45},
 });
 export default Tops;

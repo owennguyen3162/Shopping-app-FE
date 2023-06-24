@@ -10,12 +10,14 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ItemCart from '../../components/Item/ItemCart';
 import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import {RadioButton, TextInput} from 'react-native-paper';
 import Modal from 'react-native-modal';
+import {check_out, reduce_quantity} from '../../redux/action/cart.action';
+import {count_quantityOD} from '../../redux/action/order.action';
 const CartScreen = () => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
@@ -26,8 +28,11 @@ const CartScreen = () => {
   const [editAddress, setEditAddress] = React.useState(false);
   const [cartId, setCartId] = React.useState(null);
   const [isModalVisible, setModalVisible] = React.useState(false);
-
   const [option, setOption] = React.useState(50);
+  const cartQuantity = useSelector(state => state.Cart);
+  const orderQuantity = useSelector(state => state.Order);
+
+  const dispatch = useDispatch();
   React.useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,9 +41,9 @@ const CartScreen = () => {
     try {
       const res = await instance.get('/api/cart/' + (await getUserId()));
       if (res.status === 200) {
-        if (res.data.length !== 0) {
-          setData(res.data);
-          setPrice(handle_TotalPrice(res.data));
+        setData(res.data);
+        setPrice(handle_TotalPrice(res.data));
+        if (res.data.length > 0) {
           setAddress(res.data[0].address);
         }
       }
@@ -62,6 +67,8 @@ const CartScreen = () => {
         },
       );
       if (res.status === 201) {
+        dispatch(check_out());
+        dispatch(count_quantityOD(orderQuantity.quantity));
         return getData();
       }
     } catch (error) {
@@ -95,6 +102,7 @@ const CartScreen = () => {
               `/api/cart/removeToCart/${cartId}`,
             );
             if (res.status === 204) {
+              dispatch(reduce_quantity(cartQuantity.quantity));
               getData();
             }
           } catch (error) {
@@ -297,7 +305,12 @@ const CartScreen = () => {
             backdropTransitionInTiming={1000}
             backdropTransitionOutTiming={500}
             style={Style.modal}>
-            <View style={theme.color === "white" ? Style.modalContent: Style.modalContentDark}>
+            <View
+              style={
+                theme.color === 'white'
+                  ? Style.modalContent
+                  : Style.modalContentDark
+              }>
               <View style={Style.center}>
                 <View style={Style.barIcon} />
 
@@ -315,7 +328,12 @@ const CartScreen = () => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={theme.color === "white" ? Style.text: Style.textDark}>Delete</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Delete
+                      </Text>
                     </View>
                   </Pressable>
                   <View style={Style.line}></View>
@@ -332,7 +350,12 @@ const CartScreen = () => {
                         }}
                         style={{width: 30, height: 30}}
                       />
-                      <Text style={theme.color === "white" ? Style.text: Style.textDark}>Cancel</Text>
+                      <Text
+                        style={
+                          theme.color === 'white' ? Style.text : Style.textDark
+                        }>
+                        Cancel
+                      </Text>
                     </View>
                   </Pressable>
                   <View style={Style.line}></View>

@@ -5,18 +5,19 @@ import HomeIcon from 'react-native-vector-icons/Feather';
 import CartIcon from 'react-native-vector-icons/Feather';
 import NotificationIcon from 'react-native-vector-icons/Ionicons';
 import AccountIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import OrderIcon from 'react-native-vector-icons/FontAwesome5';
-
-const BottomStack = createBottomTabNavigator();
 import {useSelector} from 'react-redux';
 import OrderScreen from '../bottomTab/OrderScreen';
 import Notification from '../bottomTab/NotificationScreen';
 import Account from '../bottomTab/AccountScreen';
+
+const BottomStack = createBottomTabNavigator();
+
 function Home() {
   const theme = useSelector(state => state.SwitchColor);
   const display = useSelector(state => state.tabbarStatus);
-
+  const cartQuantity = useSelector(state => state.Cart);
+  const orderQuantity = useSelector(state => state.Order);
   return (
     <BottomStack.Navigator
       screenOptions={
@@ -64,7 +65,8 @@ function Home() {
           tabBarIcon: ({color}) => (
             <CartIcon name="shopping-cart" size={22} color={color} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge:
+            cartQuantity.quantity === 0 ? null : cartQuantity.quantity,
         }}
       />
       <BottomStack.Screen
@@ -74,7 +76,8 @@ function Home() {
           tabBarIcon: ({color}) => (
             <OrderIcon name="list-alt" size={22} color={color} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge:
+            orderQuantity.quantity === 0 ? null : orderQuantity.quantity,
         }}
       />
       <BottomStack.Screen
@@ -90,7 +93,7 @@ function Home() {
           ),
         }}
       />
-       <BottomStack.Screen
+      <BottomStack.Screen
         name="Profile"
         component={Account}
         options={{
@@ -103,7 +106,6 @@ function Home() {
           ),
         }}
       />
-
     </BottomStack.Navigator>
   );
 }

@@ -16,8 +16,8 @@ const showNotification = (channel_Id, data) => {
     /* Android Only Properties */
     channelId: channel_Id,
     smallIcon: data.notification.android.imageUrl,
-    largeIconUrl:
-      'https://booster.io/wp-content/uploads/custom-order-numbers-e1438361586475.png',
+    // largeIconUrl:
+    //   'https://booster.io/wp-content/uploads/custom-order-numbers-e1438361586475.png',
     // bigPictureUrl: data.notification.android.imageUrl,
     // bigLargeIcon: data.notification.android.imageUrl,
     // bigLargeIconUrl: data.notification.android.imageUrl,

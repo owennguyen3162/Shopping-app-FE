@@ -14,17 +14,28 @@ const OrdersDetail = ({route, navigation}) => {
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <View style={{flex: 1.3}}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/512/507/507257.png',
-            }}
-            style={
-              theme.color === 'white' ? Style.backImage : Style.backImageDark
-            }
-            resizeMode="stretch"
-          />
-        </Pressable>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/2732/2732652.png',
+              }}
+              style={
+                theme.color === 'white' ? Style.backImage : Style.backImageDark
+              }
+              resizeMode="stretch"
+            />
+          </Pressable>
+          <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
+            ORDER DETAILS
+          </Text>
+          <Text></Text>
+        </View>
         <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
           Code ID: {code}
         </Text>
@@ -46,7 +57,12 @@ const OrdersDetail = ({route, navigation}) => {
         </Text>
       </View>
       <View
-        style={{borderWidth: 1, width: '100%', borderColor: 'silver', marginTop:35}}></View>
+        style={{
+          borderWidth: 1,
+          width: '100%',
+          borderColor: 'silver',
+          marginTop: 35,
+        }}></View>
       <View style={{flex: 3, marginTop: 5}}>
         <FlatList
           data={data}
@@ -98,6 +114,13 @@ const Style = StyleSheet.create({
     marginBottom: 8,
   },
   textTime: {color: 'black', fontWeight: 'bold', fontSize: 13, marginBottom: 8},
+  title: {fontWeight: 'bold', fontSize: 17, color: 'black', marginRight: 20},
+  titleDark: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    color: 'white',
+    marginRight: 20,
+  },
 });
 
 export default OrdersDetail;
