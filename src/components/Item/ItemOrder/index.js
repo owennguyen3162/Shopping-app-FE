@@ -90,7 +90,7 @@ const ItemOrder = props => {
         </View>
         <View style={{flex: 1}}>
           {status === 'waiting' ? (
-            <Pressable onPress={() => remvoteItem(id)}>
+            <Pressable onPress={() => remvoteItem(id,size)}>
               <Image
                 source={{
                   uri: 'https://cdn-icons-png.flaticon.com/512/2311/2311524.png',
