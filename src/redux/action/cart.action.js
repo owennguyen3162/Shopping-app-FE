@@ -1,4 +1,4 @@
-import {COUNT, LENGHT, REDUCE,CHECK_OUT} from './types';
+import {COUNT, SIZE, REDUCE, CHECK_OUT, REMOVE_ORDERSIDE} from './types';
 
 const count = quantity => {
   return {
@@ -16,7 +16,7 @@ const reduce = quantity => {
 
 const getQuantity = quantity => {
   return {
-    type: LENGHT,
+    type: SIZE,
     quantity: quantity,
   };
 };
@@ -25,6 +25,13 @@ const checkOut = () => {
   return {
     type: CHECK_OUT,
     quantity: 0,
+  };
+};
+
+const remove = (quantity1, quantity2) => {
+  return {
+    type: REMOVE_ORDERSIDE,
+    quantity: quantity1 + quantity2,
   };
 };
 
@@ -40,6 +47,10 @@ export const get_quantity = quantity => dispatch => {
   dispatch(getQuantity(quantity));
 };
 
-export const chech_out = () => dispatch => {
+export const check_out = () => dispatch => {
   dispatch(checkOut());
+};
+
+export const remote_orderSide = (quantity1, quantity2) => dispatch => {
+  dispatch(remove(quantity1, quantity2));
 };
