@@ -69,7 +69,7 @@ const VansVeniceDetail = ({navigation}) => {
                   />
                 </TouchableOpacity>
 
-                <View>
+                <View >
                   <Text style={[Style.text, Style.textMain]}>
                     Vans Venice collection
                   </Text>
@@ -91,12 +91,14 @@ const VansVeniceDetail = ({navigation}) => {
               description: item.description,
               price: item.price,
             })}>
-              <Item
+             <View style={{paddingHorizontal: 10}}>
+             <Item
                 image={item.image}
                 name={item.name}
                 description={item.description}
                 price={item.price}
               />
+             </View>
             </Pressable>
           )}
         />
@@ -108,12 +110,10 @@ const Style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    paddingHorizontal: 10,
   },
   containerDark: {
     backgroundColor: '#111111',
     flex: 1,
-    paddingHorizontal: 10,
   },
   image: {
     width: '100%',
