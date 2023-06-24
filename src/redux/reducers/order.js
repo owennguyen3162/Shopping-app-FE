@@ -1,22 +1,26 @@
-import {COUNT, REDUCE} from '../action/types';
+import {COUNTOD, LENGHTOD, REDUCEOD} from '../action/types';
 
 const initialState = {
   quantity: 0,
 };
 
-export default function OrderReducer(state = initialState, payload) {
+export default function orderReducer(state = initialState, payload) {
   switch (payload.type) {
-    case COUNT:
+    case COUNTOD:
       return {
         ...state,
-        quantity: (quantity = payload.quantity + 1),
+        quantity: (payload.quantity += 1),
       };
-    case REDUCE:
+    case REDUCEOD:
       return {
         ...state,
-        quantity: (quantity = payload.quantity - 1),
+        quantity: (payload.quantity -= 1),
       };
-
+    case LENGHTOD:
+      return {
+        ...state,
+        quantity: payload.quantity,
+      };
     default:
       return {
         ...state,
