@@ -17,7 +17,7 @@ function Home() {
   const theme = useSelector(state => state.SwitchColor);
   const display = useSelector(state => state.tabbarStatus);
   const cartQuantity = useSelector(state => state.Cart);
-
+  const orderQuantity = useSelector(state => state.Order);
   return (
     <BottomStack.Navigator
       screenOptions={
@@ -76,7 +76,8 @@ function Home() {
           tabBarIcon: ({color}) => (
             <OrderIcon name="list-alt" size={22} color={color} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge:
+            orderQuantity.quantity === 0 ? null : orderQuantity.quantity,
         }}
       />
       <BottomStack.Screen
