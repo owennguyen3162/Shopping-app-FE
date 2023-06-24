@@ -1,4 +1,10 @@
-import {CHECK_OUT, COUNT, LENGHT, REDUCE} from '../action/types';
+import {
+  CHECK_OUT,
+  COUNT,
+  SIZE,
+  REDUCE,
+  REMOVE_ORDERSIDE,
+} from '../action/types';
 
 const initialState = {
   quantity: 0,
@@ -16,16 +22,21 @@ export default function cartReducer(state = initialState, payload) {
         ...state,
         quantity: (payload.quantity -= 1),
       };
-    case LENGHT:
+    case SIZE:
       return {
         ...state,
         quantity: payload.quantity,
       };
-      case CHECK_OUT:
-        return {
-          ...state,
-          quantity: payload.quantity,
-        };
+    case CHECK_OUT:
+      return {
+        ...state,
+        quantity: payload.quantity,
+      };
+    case REMOVE_ORDERSIDE:
+      return {
+        ...state,
+        quantity: payload.quantity,
+      };
     default:
       return {
         ...state,
