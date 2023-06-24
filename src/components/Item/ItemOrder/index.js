@@ -55,7 +55,7 @@ const ItemOrder = props => {
               <Text
                 style={[
                   theme.color === 'white' ? Style.TextName : Style.TextNameDark,
-                  {fontSize: 16, color: 'yellow'},
+                  {fontSize: 16, color: '#FFCC00'},
                 ]}>
                 shipping
               </Text>
