@@ -23,6 +23,7 @@ import {
 import messaging from '@react-native-firebase/messaging';
 import {getUserId} from '../../service/user.service';
 import {get_quantity} from '../../redux/action/cart.action';
+import {get_quantityOD} from '../../redux/action/order.action';
 const Tops = ({navigation}) => {
   const theme = useSelector(state => state.SwitchColor);
   const [Data, setData] = React.useState([]);
@@ -49,10 +50,18 @@ const Tops = ({navigation}) => {
       const getQuantityCart = await instance.get(
         '/api/cart/' + (await getUserId()),
       );
+      const getQuantityOder = await instance.get(
+        '/api/order/' + (await getUserId()),
+      );
+
       setData(data.data.data);
       setBestSelling(bestSelling.data.data);
       if (getQuantityCart.status === 200) {
         dispatch(get_quantity(getQuantityCart.data.length));
+      }
+
+      if (getQuantityOder.status === 200) {
+        dispatch(get_quantityOD(getQuantityOder.data.data.length));
       }
     } catch (error) {
       {
