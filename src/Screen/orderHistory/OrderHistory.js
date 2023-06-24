@@ -41,14 +41,26 @@ const OrderHistory = ({navigation}) => {
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
-      <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/128/2732/2732652.png',
-          }}
-          style={theme.color === 'white' ? Style.icon : Style.iconDark}
-        />
-      </Pressable>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/128/2732/2732652.png',
+            }}
+            style={theme.color === 'white' ? Style.icon : Style.iconDark}
+          />
+        </Pressable>
+        <Text style={theme.color === 'white' ? Style.title : Style.titleDark}>
+          ORDER HISTORY
+        </Text>
+        <Text></Text>
+      </View>
+
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator />
@@ -94,5 +106,19 @@ const Style = StyleSheet.create({
   },
   icon: {width: 35, height: 35, marginTop: 20},
   iconDark: {width: 35, marginTop: 20, height: 35, tintColor: 'white'},
+  title: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    color: 'black',
+    marginRight: 20,
+    marginTop: 20,
+  },
+  titleDark: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    color: 'white',
+    marginRight: 20,
+    marginTop: 20,
+  },
 });
 export default OrderHistory;
