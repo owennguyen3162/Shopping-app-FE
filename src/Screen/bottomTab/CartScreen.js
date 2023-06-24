@@ -16,7 +16,8 @@ import instance from '../../service/axios';
 import {getUserId} from '../../service/user.service';
 import {RadioButton, TextInput} from 'react-native-paper';
 import Modal from 'react-native-modal';
-import {chech_out, reduce_quantity} from '../../redux/action/cart.action';
+import {check_out, reduce_quantity} from '../../redux/action/cart.action';
+import {count_quantityOD} from '../../redux/action/order.action';
 const CartScreen = () => {
   const theme = useSelector(state => state.SwitchColor);
   const [data, setData] = React.useState([]);
@@ -29,6 +30,8 @@ const CartScreen = () => {
   const [isModalVisible, setModalVisible] = React.useState(false);
   const [option, setOption] = React.useState(50);
   const cartQuantity = useSelector(state => state.Cart);
+  const orderQuantity = useSelector(state => state.Order);
+
   const dispatch = useDispatch();
   React.useEffect(() => {
     getData();
@@ -64,7 +67,8 @@ const CartScreen = () => {
         },
       );
       if (res.status === 201) {
-        dispatch(chech_out())
+        dispatch(check_out());
+        dispatch(count_quantityOD(orderQuantity.quantity));
         return getData();
       }
     } catch (error) {
