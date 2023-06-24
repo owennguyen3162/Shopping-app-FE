@@ -8,8 +8,9 @@ export const HIDDEN_TABBAR = 'HIDDEN_TABBAR';
 export const SHOW_TABAR = 'SHOW_TABAR';
 export const COUNT = 'COUNT';
 export const REDUCE = 'REDUCE';
-export const LENGHT = 'LENGHT';
+export const SIZE = 'SIZE';
 export const CHECK_OUT = 'CHECK_OUT';
-
-
-
+export const COUNTOD = 'COUNTOD';
+export const REDUCEOD = 'REDUCEOD';
+export const REMOVE_ORDERSIDE = 'REMOVE_ORDERSIDE';
+export const LENGHTOD = 'LENGHTOD';
