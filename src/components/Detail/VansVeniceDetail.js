@@ -62,7 +62,7 @@ const VansVeniceDetail = ({navigation}) => {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Image
                     source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/512/151/151846.png',
+                      uri: 'https://cdn-icons-png.flaticon.com/128/2732/2732652.png',
                     }}
                     style={Style.backImage}
                     resizeMode="center"
