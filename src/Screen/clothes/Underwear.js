@@ -1,7 +1,7 @@
 import {
   View,
   Text,
-  Button,
+  TextInput,
   StatusBar,
   StyleSheet,
   Image,
@@ -11,22 +11,55 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Item from '../../components/Item/Item';
 import {useSelector} from 'react-redux';
 import useFetch from '../../components/hook/useFetch';
-
-const Underwear = ({navigation}) => {
-  const {data, isLoading, error, refreshing, onRefresh} = useFetch(
-    `/api/products/underwear`,
-  );
-
+const Underwears = ({navigation}) => {
+  const {data, isLoading, error, refreshing, onRefresh} =
+    useFetch(`/api/products/Underwear`);
+  const [isLoadingCompo, SetIsLoading] = useState(true);
+  const [ascendingOrder, setAscendingOrder] = useState(false);
   const theme = useSelector(state => state.SwitchColor);
+  const [dataNew, setDataNew] = useState([]);
+  const [dataOld, setDataOld] = useState([]);
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setDataNew(data);
+      setDataOld(data);
+      SetIsLoading(isLoading);
+    }
+  }, [isLoading]);
+
+  const handleSort = () => {
+    setAscendingOrder(!ascendingOrder);
+    if (ascendingOrder) {
+      dataNew.sort((valueA, valueB) => {
+        return valueA.price - valueB.price;
+      });
+    } else {
+      dataNew.sort((valueA, valueB) => {
+        return valueB.price - valueA.price;
+      });
+    }
+  };
+
+  const handleSearch = text => {
+    if (text) {
+      const dataNew = data.filter(
+        item => item.name.toUpperCase().indexOf(text.toUpperCase()) >= 0,
+      );
+      setDataNew(dataNew);
+    } else {
+      setDataNew(dataOld);
+    }
+  };
   return (
     <View
       style={theme.color === 'white' ? Style.container : Style.containerDark}>
       <StatusBar hidden={true} />
-      {isLoading ? (
+      {isLoadingCompo ? (
         <ActivityIndicator size={'large'} />
       ) : error ? (
         Alert.alert('Notification', 'Server error', [
@@ -36,7 +69,7 @@ const Underwear = ({navigation}) => {
         <>
           <View style={Style.header}>
             <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-              Accesories
+              Underwears
             </Text>
             <Pressable onPress={() => navigation.toggleDrawer()}>
               <Image
@@ -48,11 +81,48 @@ const Underwear = ({navigation}) => {
             </Pressable>
           </View>
           <View style={{width: '100%', height: '91%'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <TextInput
+                placeholder="Search...."
+                placeholderTextColor={theme.color === 'white' ? '' : 'white'}
+                onChangeText={text => handleSearch(text)}
+                style={
+                  theme.color === 'white'
+                    ? Style.textInputWhite
+                    : Style.textInputDark
+                }
+              />
+
+              <Pressable onPress={() => handleSort()}>
+                {ascendingOrder ? (
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375970.png',
+                    }}
+                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    resizeMode="center"
+                  />
+                ) : (
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375968.png',
+                    }}
+                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    resizeMode="center"
+                  />
+                )}
+              </Pressable>
+            </View>
             <FlatList
               showsVerticalScrollIndicator={false}
               initialNumToRender={10}
               keyExtractor={item => item.id}
-              data={data}
+              data={dataNew}
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
@@ -127,5 +197,21 @@ const Style = StyleSheet.create({
     resizeMode: 'center',
     tintColor: 'white',
   },
+  textInputDark: {
+    width: '87%',
+    height: 50,
+    backgroundColor: '#222222',
+    borderRadius: 4,
+    paddingLeft: 10,
+    marginBottom: 10,
+    color: 'white',
+  },
+  textInputWhite: {
+    width: '87%',
+    height: 50,
+    borderRadius: 4,
+    paddingLeft: 10,
+    marginBottom: 10,
+  },
 });
-export default Underwear;
+export default Underwears;
