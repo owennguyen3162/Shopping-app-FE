@@ -10,6 +10,7 @@ const useFetch = url => {
   React.useEffect(() => {
     fetch();
   }, [url]);
+
   const fetch = async () => {
     try {
       const data = await instance.get(url);
@@ -27,7 +28,6 @@ const useFetch = url => {
     setRefreshing(true);
     fetch();
   }, []);
-
   return {data: data, error, isLoading: isLoading, refreshing, onRefresh};
 };
 
