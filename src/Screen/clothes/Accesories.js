@@ -90,7 +90,9 @@ const Accesories = ({navigation}) => {
               }}>
               <TextInput
                 placeholder="Search...."
-                placeholderTextColor={theme.color === 'white' ? '' : 'white'}
+                placeholderTextColor={
+                  theme.color === 'white' ? 'black' : 'white'
+                }
                 onChangeText={text => handleSearch(text)}
                 style={
                   theme.color === 'white'
@@ -105,7 +107,11 @@ const Accesories = ({navigation}) => {
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375970.png',
                     }}
-                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    style={
+                      theme.color === 'white'
+                        ? Style.sortImage
+                        : Style.sortImageDark
+                    }
                     resizeMode="center"
                   />
                 ) : (
@@ -113,7 +119,11 @@ const Accesories = ({navigation}) => {
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375968.png',
                     }}
-                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    style={
+                      theme.color === 'white'
+                        ? Style.sortImage
+                        : Style.sortImageDark
+                    }
                     resizeMode="center"
                   />
                 )}
@@ -213,6 +223,18 @@ const Style = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 10,
     marginBottom: 10,
+    borderColor: 'silver',
+    borderWidth: 1,
+  },
+  sortImage: {
+    width: 28,
+    height: 28,
+    tintColor: '#333333',
+  },
+  sortImageDark: {
+    width: 28,
+    height: 28,
+    tintColor: 'white',
   },
 });
 export default Accesories;
