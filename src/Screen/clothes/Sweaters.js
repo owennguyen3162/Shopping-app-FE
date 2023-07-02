@@ -16,8 +16,9 @@ import Item from '../../components/Item/Item';
 import {useSelector} from 'react-redux';
 import useFetch from '../../components/hook/useFetch';
 const Sweaters = ({navigation}) => {
-  const {data, isLoading, error, refreshing, onRefresh} =
-    useFetch(`/api/products/sweaters`);
+  const {data, isLoading, error, refreshing, onRefresh} = useFetch(
+    `/api/products/sweaters`,
+  );
   const [isLoadingCompo, SetIsLoading] = useState(true);
   const [ascendingOrder, setAscendingOrder] = useState(false);
   const theme = useSelector(state => state.SwitchColor);
@@ -69,7 +70,7 @@ const Sweaters = ({navigation}) => {
         <>
           <View style={Style.header}>
             <Text style={theme.color === 'white' ? Style.text : Style.textDark}>
-            Sweaters
+              Sweaters
             </Text>
             <Pressable onPress={() => navigation.toggleDrawer()}>
               <Image
@@ -89,7 +90,9 @@ const Sweaters = ({navigation}) => {
               }}>
               <TextInput
                 placeholder="Search...."
-                placeholderTextColor={theme.color === 'white' ? '' : 'white'}
+                placeholderTextColor={
+                  theme.color === 'white' ? 'black' : 'white'
+                }
                 onChangeText={text => handleSearch(text)}
                 style={
                   theme.color === 'white'
@@ -104,7 +107,11 @@ const Sweaters = ({navigation}) => {
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375970.png',
                     }}
-                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    style={
+                      theme.color === 'white'
+                        ? Style.sortImage
+                        : Style.sortImageDark
+                    }
                     resizeMode="center"
                   />
                 ) : (
@@ -112,7 +119,11 @@ const Sweaters = ({navigation}) => {
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/7375/7375968.png',
                     }}
-                    style={{width: 28, height: 28, tintColor: 'white'}}
+                    style={
+                      theme.color === 'white'
+                        ? Style.sortImage
+                        : Style.sortImageDark
+                    }
                     resizeMode="center"
                   />
                 )}
@@ -212,6 +223,18 @@ const Style = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 10,
     marginBottom: 10,
+    borderColor: 'silver',
+    borderWidth: 1,
+  },
+  sortImage: {
+    width: 28,
+    height: 28,
+    tintColor: '#333333',
+  },
+  sortImageDark: {
+    width: 28,
+    height: 28,
+    tintColor: 'white',
   },
 });
 export default Sweaters;
